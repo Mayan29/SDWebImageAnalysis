@@ -85,6 +85,12 @@
 #define NS_OPTIONS(_type, _name) enum _name : _type _name; enum _name : _type
 #endif
 
+// #ifndefd: 代码严谨，防止重复定义
+// dispatch_queue_get_label: 获取当前队列名称
+// 之前的代码是通过 [NSThread isMainThread] 判断是否在主线程执行，现在改为判断是否由主队列上调度。
+// 由于主队列是一个串行队列，无论任务是异步同步都不会开辟新线程，所以当前队列是主队列等价于当前在主线程上执行。
+// 可以这样说，在主队列调度的任务肯定在主线程执行，而在主线程执行的任务不一定是由主队列调度的。
+// SDWebImage 官方解释: https://github.com/SDWebImage/SDWebImage/pull/781
 #ifndef dispatch_main_async_safe
 #define dispatch_main_async_safe(block)\
     if (dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL) == dispatch_queue_get_label(dispatch_get_main_queue())) {\

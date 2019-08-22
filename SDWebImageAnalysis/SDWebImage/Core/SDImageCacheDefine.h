@@ -12,26 +12,31 @@
 #import "SDWebImageDefine.h"
 
 /// Image Cache Type
+/// 图像存储类型
 typedef NS_ENUM(NSInteger, SDImageCacheType) {
-    /**
-     * For query and contains op in response, means the image isn't available in the image cache
-     * For op in request, this type is not available and take no effect.
-     */
+    
+    // For query and contains op in response, means the image isn't available in the image cache
+    // For op in request, this type is not available and take no effect.
+    // 对于查询和响应，表示图像在图像缓存中不可用。
+    // 对于请求，表示不可用且不起作用。
     SDImageCacheTypeNone,
-    /**
-     * For query and contains op in response, means the image was obtained from the disk cache.
-     * For op in request, means process only disk cache.
-     */
+
+    // For query and contains op in response, means the image was obtained from the disk cache.
+    // For op in request, means process only disk cache.
+    // 对于查询和响应，表示图像是从磁盘缓存中获取的。
+    // 对于请求，表示只处理磁盘缓存。
     SDImageCacheTypeDisk,
-    /**
-     * For query and contains op in response, means the image was obtained from the memory cache.
-     * For op in request, means process only memory cache.
-     */
+
+    // For query and contains op in response, means the image was obtained from the memory cache.
+    // For op in request, means process only memory cache.
+    // 对于查询和响应，表示图像是从内存缓存中获取的。
+    // 对于请求，表示只处理内存缓存。
     SDImageCacheTypeMemory,
-    /**
-     * For query and contains op in response, this type is not available and take no effect.
-     * For op in request, means process both memory cache and disk cache.
-     */
+
+    // For query and contains op in response, this type is not available and take no effect.
+    // For op in request, means process both memory cache and disk cache.
+    // 对于查询和响应，表示图像在图像缓存中不可用。
+    // 对于请求，表示同时处理内存缓存和磁盘缓存。
     SDImageCacheTypeAll
 };
 
