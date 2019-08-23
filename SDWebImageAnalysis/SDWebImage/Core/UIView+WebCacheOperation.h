@@ -31,11 +31,8 @@
  */
 - (void)sd_setImageLoadOperation:(nullable id<SDWebImageOperation>)operation forKey:(nullable NSString *)key;
 
-/**
- *  Cancel all operations for the current UIView and key
- *
- *  @param key key for identifying the operations
- */
+// Cancel all operations for the current UIView and key
+// 取消当前 UIView 的所有操作
 - (void)sd_cancelImageLoadOperationWithKey:(nullable NSString *)key;
 
 /**

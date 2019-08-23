@@ -13,6 +13,8 @@ static char loadOperationKey;
 
 // key is strong, value is weak because operation instance is retained by SDWebImageManager's runningOperations property
 // we should use lock to keep thread-safe because these method may not be acessed from main queue
+// key is strong, value is weak 因为 SDWebImageManager 的 runningOperations 属性保留了 operation 实例
+// 我们应该使用 lock 来保持线程安全，因为这些 method 可能无法从 main queue 主队列中获取
 typedef NSMapTable<NSString *, id<SDWebImageOperation>> SDOperationsDictionary;
 
 @implementation UIView (WebCacheOperation)
@@ -52,9 +54,11 @@ typedef NSMapTable<NSString *, id<SDWebImageOperation>> SDOperationsDictionary;
     }
 }
 
+// 取消当前 UIView 的所有操作
 - (void)sd_cancelImageLoadOperationWithKey:(nullable NSString *)key {
     if (key) {
         // Cancel in progress downloader from queue
+        // 从 queue 队列中取消正在进行的下载程序
         SDOperationsDictionary *operationDictionary = [self sd_operationDictionary];
         id<SDWebImageOperation> operation;
         
@@ -62,6 +66,7 @@ typedef NSMapTable<NSString *, id<SDWebImageOperation>> SDOperationsDictionary;
             operation = [operationDictionary objectForKey:key];
         }
         if (operation) {
+            // 检查对象是否实现了指定协议类的方法
             if ([operation conformsToProtocol:@protocol(SDWebImageOperation)]) {
                 [operation cancel];
             }

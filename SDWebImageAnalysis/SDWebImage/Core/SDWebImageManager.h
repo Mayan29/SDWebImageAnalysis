@@ -15,6 +15,10 @@
 #import "SDWebImageCacheSerializer.h"
 #import "SDWebImageOptionsProcessor.h"
 
+// image: 请求的图像
+// error: 错误信息
+// cacheType: 图像存储类型（本地缓存还是网络获取）
+// imageURL: 原始图像 URL
 typedef void(^SDExternalCompletionBlock)(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL);
 
 typedef void(^SDInternalCompletionBlock)(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL);
