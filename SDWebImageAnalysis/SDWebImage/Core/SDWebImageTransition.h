@@ -33,9 +33,8 @@ typedef void (^SDWebImageTransitionCompletionBlock)(BOOL finished);
 // 注意，这些转换是为基本用法而提供的。如果需要复杂的动画，请考虑直接使用核心动画或 `SDWebImageAvoidAutoSetImage`，并在图像加载完成后实现自己的动画。
 @interface SDWebImageTransition : NSObject
 
-/**
- By default, we set the image to the view at the beginning of the animtions. You can disable this and provide custom set image process
- */
+// By default, we set the image to the view at the beginning of the animtions. You can disable this and provide custom set image process
+// 默认情况下，我们在动画开始时将图像设置为视图。您可以禁用此功能并提供自定义图像
 @property (nonatomic, assign) BOOL avoidAutoSetImage;
 /**
  The duration of the transition animation, measured in seconds. Defaults to 0.5.
@@ -53,13 +52,11 @@ typedef void (^SDWebImageTransitionCompletionBlock)(BOOL finished);
  A block object to be executed before the animation sequence starts.
  */
 @property (nonatomic, copy, nullable) SDWebImageTransitionPreparesBlock prepares;
-/**
- A block object that contains the changes you want to make to the specified view.
- */
+// A block object that contains the changes you want to make to the specified view.
+// 包含要对指定视图进行的更改的 block 对象
 @property (nonatomic, copy, nullable) SDWebImageTransitionAnimationsBlock animations;
-/**
- A block object to be executed when the animation sequence ends.
- */
+// A block object to be executed when the animation sequence ends.
+// 动画结束时要执行的 block 对象
 @property (nonatomic, copy, nullable) SDWebImageTransitionCompletionBlock completion;
 
 @end

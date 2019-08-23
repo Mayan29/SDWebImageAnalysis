@@ -16,11 +16,8 @@
 @protocol SDWebImageIndicator <NSObject>
 
 @required
-/**
- The view associate to the indicator.
-
- @return The indicator view
- */
+// The view associate to the indicator.
+// 与指示器关联的视图
 @property (nonatomic, strong, readonly, nonnull) UIView *indicatorView;
 
 // Start the animating for indicator.

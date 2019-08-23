@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SDmetamacros.h"
 
+// dispatch_semaphore_wait: 对 lock 减 1，如果值小于 0 则等待，如果不小于 0，则执行代码
 #ifndef SD_LOCK
 #define SD_LOCK(lock) dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
 #endif

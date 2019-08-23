@@ -23,9 +23,8 @@ typedef void(^SDExternalCompletionBlock)(UIImage * _Nullable image, NSError * _N
 
 typedef void(^SDInternalCompletionBlock)(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL);
 
-/**
- A combined operation representing the cache and loader operation. You can use it to cancel the load process.
- */
+// A combined operation representing the cache and loader operation. You can use it to cancel the load process.
+// 表示缓存和加载操作的组合操作。你可以使用它取消加载过程。
 @interface SDWebImageCombinedOperation : NSObject <SDWebImageOperation>
 
 /**
@@ -77,12 +76,15 @@ typedef void(^SDInternalCompletionBlock)(UIImage * _Nullable image, NSData * _Nu
 
 @end
 
+// The SDWebImageManager is the class behind the UIImageView+WebCache category and likes.
+// It ties the asynchronous downloader (SDWebImageDownloader) with the image cache store (SDImageCache).
+// You can use this class directly to benefit from web image downloading with caching in another context than
+// a UIView.
+// SDWebImageManager 是 UIImageView+WebCache 类别后面的类。
+// 它将异步下载器 SDWebImageDownloader 与图像缓存存储 SDImageCache 联系起来。
+// 你可以直接使用这个类从 web 图像下载中获益，在另一个上下文中使用缓存，而不是 UIView。
+
 /**
- * The SDWebImageManager is the class behind the UIImageView+WebCache category and likes.
- * It ties the asynchronous downloader (SDWebImageDownloader) with the image cache store (SDImageCache).
- * You can use this class directly to benefit from web image downloading with caching in another context than
- * a UIView.
- *
  * Here is a simple example of how to use SDWebImageManager:
  *
  * @code
@@ -116,34 +118,40 @@ SDWebImageManager *manager = [SDWebImageManager sharedManager];
  */
 @property (strong, nonatomic, readonly, nonnull) id<SDImageLoader> imageLoader;
 
-/**
- The image transformer for manager. It's used for image transform after the image load finished and store the transformed image to cache, see `SDImageTransformer`.
- Defaults to nil, which means no transform is applied.
- @note This will affect all the load requests for this manager if you provide. However, you can pass `SDWebImageContextImageTransformer` in context arg to explicitly use that transformer instead.
- */
+// The image transformer for manager. It's used for image transform after the image load finished and store the transformed image to cache, see `SDImageTransformer`.
+// Defaults to nil, which means no transform is applied.
+// @note This will affect all the load requests for this manager if you provide. However, you can pass `SDWebImageContextImageTransformer` in context arg to explicitly use that transformer instead.
+// manager 的图像转换器。它用于图像加载完成后的图像转换，并将转换后的图像存储到缓存中，请参见 `SDImageTransformer`。
+// 默认为 nil，这意味着不转换。
+// 注意：如果你提供，这将影响 manager 的所有加载请求。但是，你可以通过上下文 `SDWebImageContextImageTransformer` 使用那个转换器来替换。
 @property (strong, nonatomic, nullable) id<SDImageTransformer> transformer;
 
+// The cache filter is used to convert an URL into a cache key each time SDWebImageManager need cache key to use image cache.
+// The following example sets a filter in the application delegate that will remove any query-string from the URL before to use it as a cache key:
+// 每次 SDWebImageManager 需要缓存密钥以使用图像缓存时，缓存过滤器用于将 URL 转换为缓存密钥。
+// 以下示例在应用程序代理中设置一个过滤器，该过滤器将从 URL 中删除任何查询字符串，然后将其用作缓存键：
+
 /**
- * The cache filter is used to convert an URL into a cache key each time SDWebImageManager need cache key to use image cache.
- *
- * The following example sets a filter in the application delegate that will remove any query-string from the
- * URL before to use it as a cache key:
- *
- * @code
+ @code
  SDWebImageManager.sharedManager.cacheKeyFilter =[SDWebImageCacheKeyFilter cacheKeyFilterWithBlock:^NSString * _Nullable(NSURL * _Nonnull url) {
     url = [[NSURL alloc] initWithScheme:url.scheme host:url.host path:url.path];
     return [url absoluteString];
  }];
- * @endcode
+ @endcode
  */
 @property (nonatomic, strong, nullable) id<SDWebImageCacheKeyFilter> cacheKeyFilter;
 
+// The cache serializer is used to convert the decoded image, the source downloaded data, to the actual data used for storing to the disk cache. If you return nil, means to generate the data from the image instance, see `SDImageCache`.
+// For example, if you are using WebP images and facing the slow decoding time issue when later retriving from disk cache again. You can try to encode the decoded image to JPEG/PNG format to disk cache instead of source downloaded data.
+// @note The `image` arg is nonnull, but when you also provide a image transformer and the image is transformed, the `data` arg may be nil, take attention to this case.
+// @note This method is called from a global queue in order to not to block the main thread.
+// 缓存序列化器用于将解码后的图像（下载的源数据）转换为用于存储到磁盘缓存的实际数据。如果返回 nil，则表示要从图像实例生成数据，请参见 `SDImageCache`。
+// 例如，如果你使用的是 WebP 图像，并且以后再次从磁盘缓存中检索时，会遇到解码时间慢的问题。您可以尝试将解码后的图像编码为 JPEG/PNG 格式到磁盘缓存，而不是源下载的数据。
+// 注意：`image` 参数不为空，但是你还提供图像转换器并对图像进行转换时，`data` 参数可能为零，请注意这种情况。
+// 注意：为了不阻塞主线程，从全局队列调用此方法。
+
 /**
- * The cache serializer is used to convert the decoded image, the source downloaded data, to the actual data used for storing to the disk cache. If you return nil, means to generate the data from the image instance, see `SDImageCache`.
- * For example, if you are using WebP images and facing the slow decoding time issue when later retriving from disk cache again. You can try to encode the decoded image to JPEG/PNG format to disk cache instead of source downloaded data.
- * @note The `image` arg is nonnull, but when you also provide a image transformer and the image is transformed, the `data` arg may be nil, take attention to this case.
- * @note This method is called from a global queue in order to not to block the main thread.
- * @code
+ @code
  SDWebImageManager.sharedManager.cacheSerializer = [SDWebImageCacheSerializer cacheSerializerWithBlock:^NSData * _Nullable(UIImage * _Nonnull image, NSData * _Nullable data, NSURL * _Nullable imageURL) {
     SDImageFormat format = [NSData sd_imageFormatForImageData:data];
     switch (format) {
@@ -152,17 +160,22 @@ SDWebImageManager *manager = [SDWebImageManager sharedManager];
         default:
             return data;
     }
-}];
- * @endcode
- * The default value is nil. Means we just store the source downloaded data to disk cache.
+ }];
+ @endcode
  */
+
+// The default value is nil. Means we just store the source downloaded data to disk cache.
+// 默认值为零。意味着我们只是将源下载的数据存储到磁盘缓存中。
 @property (nonatomic, strong, nullable) id<SDWebImageCacheSerializer> cacheSerializer;
 
+// The options processor is used, to have a global control for all the image request options and context option for current manager.
+// @note If you use `transformer`, `cacheKeyFilter` or `cacheSerializer` property of manager, the input context option already apply those properties before passed. This options processor is a better replacement for those property in common usage.
+// For example, you can control the global options, based on the URL or original context option like the below code.
+// 选项处理器用于全局控制当前管理器的所有图像请求选项和上下文选项。
+// 注意：如果使用管理器的 `transformer`、`cacheKeyFilter` 或 `cacheSerializer` 属性，则输入上下文选项在传递之前已经应用了这些属性。这个选项处理器可以更好地替换那些常用的属性。
+// 例如，可以根据 URL 或原始上下文选项控制全局选项，如以下示例：
+
 /**
- The options processor is used, to have a global control for all the image request options and context option for current manager.
- @note If you use `transformer`, `cacheKeyFilter` or `cacheSerializer` property of manager, the input context option already apply those properties before passed. This options processor is a better replacement for those property in common usage.
- For example, you can control the global options, based on the URL or original context option like the below code.
- 
  @code
  SDWebImageManager.sharedManager.optionsProcessor = [SDWebImageOptionsProcessor optionsProcessorWithBlock:^SDWebImageOptionsResult * _Nullable(NSURL * _Nullable url, SDWebImageOptions options, SDWebImageContext * _Nullable context) {
      // Only do animation on `SDAnimatedImageView`

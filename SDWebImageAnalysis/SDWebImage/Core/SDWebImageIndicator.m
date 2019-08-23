@@ -217,6 +217,7 @@ static NSInteger UIActivityIndicatorViewStyleLarge = 101;
 #if SD_UIKIT
     if ([self.indicatorView respondsToSelector:@selector(observedProgress)] && self.indicatorView.observedProgress) {
         // Ignore NSProgress
+        // 忽略 NSProgress
     } else {
         self.indicatorView.progress = 0;
     }

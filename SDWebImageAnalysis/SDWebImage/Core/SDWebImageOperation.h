@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 /// A protocol represents cancelable operation.
+/// 表示可取消的操作
 @protocol SDWebImageOperation <NSObject>
 
 - (void)cancel;

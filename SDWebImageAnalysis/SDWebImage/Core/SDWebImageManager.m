@@ -119,15 +119,18 @@ static id<SDImageLoader> _defaultImageLoader;
                                          progress:(nullable SDImageLoaderProgressBlock)progressBlock
                                         completed:(nonnull SDInternalCompletionBlock)completedBlock {
     // Invoking this method without a completedBlock is pointless
+    // 在没有完成 block 的情况下调用此方法是毫无意义的
     NSAssert(completedBlock != nil, @"If you mean to prefetch the image, use -[SDWebImagePrefetcher prefetchURLs] instead");
 
     // Very common mistake is to send the URL using NSString object instead of NSURL. For some strange reason, Xcode won't
     // throw any warning for this type mismatch. Here we failsafe this error by allowing URLs to be passed as NSString.
+    // 最常见的错误是使用 NSString 对象而不是 NSURL 发送 URL。出于某种奇怪的原因，Xcode 不会对这种类型不匹配发出任何警告。在这里，我们通过允许将 URL 作为 NSString 传递来故障保护此错误。
     if ([url isKindOfClass:NSString.class]) {
         url = [NSURL URLWithString:(NSString *)url];
     }
 
     // Prevents app crashing on argument type error like sending NSNull instead of NSURL
+    // 防止参数类型错误（如发送 NSNull 而不是 NSURL）导致 app 崩溃
     if (![url isKindOfClass:NSURL.class]) {
         url = nil;
     }
@@ -152,6 +155,7 @@ static id<SDImageLoader> _defaultImageLoader;
     SD_UNLOCK(self.runningOperationsLock);
     
     // Preprocess the options and context arg to decide the final the result for manager
+    // 预处理选项和上下文参数，以确定最终的管理器结果
     SDWebImageOptionsResult *result = [self processedResultForURL:url options:options context:context];
     
     // Start the entry to load image from cache
@@ -404,16 +408,19 @@ static id<SDImageLoader> _defaultImageLoader;
     SDWebImageMutableContext *mutableContext = [SDWebImageMutableContext dictionary];
     
     // Image Transformer from manager
+    // manager 提供的图像转换器
     if (!context[SDWebImageContextImageTransformer]) {
         id<SDImageTransformer> transformer = self.transformer;
         [mutableContext setValue:transformer forKey:SDWebImageContextImageTransformer];
     }
     // Cache key filter from manager
+    // manager 提供的缓存密钥过滤器
     if (!context[SDWebImageContextCacheKeyFilter]) {
         id<SDWebImageCacheKeyFilter> cacheKeyFilter = self.cacheKeyFilter;
         [mutableContext setValue:cacheKeyFilter forKey:SDWebImageContextCacheKeyFilter];
     }
     // Cache serializer from manager
+    // manager 提供的缓存序列化器
     if (!context[SDWebImageContextCacheSerializer]) {
         id<SDWebImageCacheSerializer> cacheSerializer = self.cacheSerializer;
         [mutableContext setValue:cacheSerializer forKey:SDWebImageContextCacheSerializer];
@@ -427,11 +434,13 @@ static id<SDImageLoader> _defaultImageLoader;
     }
     
     // Apply options processor
+    // 应用选项处理器
     if (self.optionsProcessor) {
         result = [self.optionsProcessor processedResultForURL:url options:options context:context];
     }
     if (!result) {
         // Use default options result
+        // 使用默认选项结果
         result = [[SDWebImageOptionsResult alloc] initWithOptions:options context:context];
     }
     

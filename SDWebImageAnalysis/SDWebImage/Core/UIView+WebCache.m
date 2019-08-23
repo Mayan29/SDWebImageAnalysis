@@ -117,6 +117,7 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
             @strongify(self);
             if (!self) { return; }
             // if the progress not been updated, mark it to complete state
+            // 如果进度未更新，则将其标记为完成状态。
             if (imageProgress && finished && !error && imageProgress.totalUnitCount == 0 && imageProgress.completedUnitCount == 0) {
                 imageProgress.totalUnitCount = SDWebImageProgressUnitCountUnknown;
                 imageProgress.completedUnitCount = SDWebImageProgressUnitCountUnknown;
@@ -124,6 +125,7 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
             
 #if SD_UIKIT || SD_MAC
             // check and stop image indicator
+            // 检查并停止图像指示器
             if (finished) {
                 [self sd_stopImageIndicator];
             }
@@ -143,8 +145,9 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
             };
             
             // case 1a: we got an image, but the SDWebImageAvoidAutoSetImage flag is set
-            // OR
             // case 1b: we got no image and the SDWebImageDelayPlaceholder is not set
+            // 例 1a: 我们得到一个图像，但是设置了 SDWebImageAvoidAutoSetImage 标志
+            // 例 1b: 我们没有得到图像，并且没有设置 SDWebImageDelayPlaceholder
             if (shouldNotSetImage) {
                 dispatch_main_async_safe(callCompletedBlockClojure);
                 return;
@@ -154,16 +157,19 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
             NSData *targetData = nil;
             if (image) {
                 // case 2a: we got an image and the SDWebImageAvoidAutoSetImage is not set
+                // 例 2a: 我们得到一个图像，并且没有设置 SDWebImageAvoidAutoSetImage
                 targetImage = image;
                 targetData = data;
             } else if (options & SDWebImageDelayPlaceholder) {
                 // case 2b: we got no image and the SDWebImageDelayPlaceholder flag is set
+                // 例 2b: 我们没有得到图像，并且设置了 SDWebImageDelayPlaceholder 标志
                 targetImage = placeholder;
                 targetData = nil;
             }
             
 #if SD_UIKIT || SD_MAC
             // check whether we should use the image transition
+            // 检查是否应该使用图像转换
             SDWebImageTransition *transition = nil;
             if (finished && (options & SDWebImageForceTransition || cacheType == SDImageCacheTypeNone)) {
                 transition = self.sd_imageTransition;
@@ -300,6 +306,7 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
     [self setNeedsLayout:YES];
 #elif SD_WATCH
     // Do nothing because WatchKit automatically layout the view after property change
+    // 不执行任何操作，因为 WatchKit 在属性更改后自动布局视图
 #endif
 }
 
@@ -354,6 +361,7 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
     });
 }
 
+// 停止图像指示器
 - (void)sd_stopImageIndicator {
     id<SDWebImageIndicator> imageIndicator = self.sd_imageIndicator;
     if (!imageIndicator) {

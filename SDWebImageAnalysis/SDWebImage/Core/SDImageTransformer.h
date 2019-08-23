@@ -18,12 +18,13 @@
  */
 FOUNDATION_EXPORT NSString * _Nullable SDTransformedKeyForKey(NSString * _Nullable key, NSString * _Nonnull transformerKey);
 
-/**
- A transformer protocol to transform the image load from cache or from download.
- You can provide transformer to cache and manager (Through the `transformer` property or context option `SDWebImageContextImageTransformer`).
- 
- @note The transform process is called from a global queue in order to not to block the main queue.
- */
+
+// A transformer protocol to transform the image load from cache or from download.
+// You can provide transformer to cache and manager (Through the `transformer` property or context option `SDWebImageContextImageTransformer`).
+// @note The transform process is called from a global queue in order to not to block the main queue.
+// 转换器协议，转换从缓存或下载加载的图像。
+// 你可以向缓存和管理器提供转换器（通过 `transformer` 属性或上下文选项 `SDWebImageContextImageTransformer`）。
+// 注意，转换过程是从全局队列调用的，以避免阻塞主队列。
 @protocol SDImageTransformer <NSObject>
 
 @required
