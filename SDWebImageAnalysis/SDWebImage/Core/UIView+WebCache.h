@@ -40,30 +40,22 @@ typedef void(^SDSetImageBlock)(UIImage * _Nullable image, NSData * _Nullable ima
  */
 @property (nonatomic, strong, null_resettable) NSProgress *sd_imageProgress;
 
-/**
- * Set the imageView `image` with an `url` and optionally a placeholder image.
- *
- * The download is asynchronous and cached.
- *
- * @param url            The url for the image.
- * @param placeholder    The image to be set initially, until the image request finishes.
- * @param options        The options to use when downloading the image. @see SDWebImageOptions for the possible values.
- * @param context        A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
- * @param setImageBlock  Block used for custom set image code. If not provide, use the built-in set image code (supports `UIImageView/NSImageView` and `UIButton/NSButton` currently)
- * @param progressBlock  A block called while image is downloading
- *                       @note the progress block is executed on a background queue
- * @param completedBlock A block called when operation has been completed.
- *   This block has no return value and takes the requested UIImage as first parameter and the NSData representation as second parameter.
- *   In case of error the image parameter is nil and the third parameter may contain an NSError.
- *
- *   The forth parameter is an `SDImageCacheType` enum indicating if the image was retrieved from the local cache
- *   or from the memory cache or from the network.
- *
- *   The fith parameter normally is always YES. However, if you provide SDWebImageAvoidAutoSetImage with SDWebImageProgressiveLoad options to enable progressive downloading and set the image yourself. This block is thus called repeatedly with a partial image. When image is fully downloaded, the
- *   block is called a last time with the full image and the last parameter set to YES.
- *
- *   The last parameter is the original image URL
- */
+// Set the imageView `image` with an `url` and optionally a placeholder image.
+// The download is asynchronous and cached.
+// 使用 `url` 和可选的占位符图像设置 imageView 的 `image`。
+// 下载是异步的并且缓存。
+
+// setImageBlock: Block used for custom set image code. If not provide, use the built-in set image code (supports `UIImageView/NSImageView` and `UIButton/NSButton` currently)
+// setImageBlock: 用于自定义设置图像代码的 block。如果未提供，则使用内置的设置图像代码（当前支持 `UIImageView/NSImageView` 和 `UIButton/NSButton`）。
+
+// completedBlock: This block has no return value and takes the requested UIImage as first parameter and the NSData representation as second parameter. In case of error the image parameter is nil and the third parameter may contain an NSError.
+// The forth parameter is an `SDImageCacheType` enum indicating if the image was retrieved from the local cache or from the memory cache or from the network.
+// The fith parameter normally is always YES. However, if you provide SDWebImageAvoidAutoSetImage with SDWebImageProgressiveLoad options to enable progressive downloading and set the image yourself. This block is thus called repeatedly with a partial image. When image is fully downloaded, the block is called a last time with the full image and the last parameter set to YES.
+// The last parameter is the original image URL
+// completedBlock: 这个 block 没有返回值，将请求的 UIImage 作为第一个参数，NSData 作为第二个参数。如果出现错误，image 参数为 nil，第三个参数可能包含 NSError。
+// 第四个参数是 `SDImageCacheType` 枚举，指示图像是从本地缓存还是从内存缓存或网络中检索的。
+// 第五个参数通常为 YES。但是，如果你为 SDWebImageAvoidAutoSetImage 提供 SDWebImageProgressiveLoad 选项以启用渐进式下载并自己设置图像。因此，部分图像会重复调用这个 block。当图像完全下载时，这个 block 将在最后一次调用时将完整图像和最后一个参数设置为 YES。
+// 最后一个参数是原始图像 URL。
 - (void)sd_internalSetImageWithURL:(nullable NSURL *)url
                   placeholderImage:(nullable UIImage *)placeholder
                            options:(SDWebImageOptions)options
