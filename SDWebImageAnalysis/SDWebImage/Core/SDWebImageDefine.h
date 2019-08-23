@@ -46,10 +46,10 @@ FOUNDATION_EXPORT UIImage * _Nullable SDScaledImageForKey(NSString * _Nullable k
  */
 FOUNDATION_EXPORT UIImage * _Nullable SDScaledImageForScaleFactor(CGFloat scale, UIImage * _Nullable image);
 
+// 缓存选项
 #pragma mark - WebCache Options
 
 /// WebCache options
-/// 缓存选项
 typedef NS_OPTIONS(NSUInteger, SDWebImageOptions) {
     
     // By default, when a URL fail to be downloaded, the URL is blacklisted so the library won't keep trying.
@@ -175,58 +175,59 @@ typedef NS_OPTIONS(NSUInteger, SDWebImageOptions) {
 };
 
 
+// 上下文选项
 #pragma mark - Context Options
 
-/**
- A String to be used as the operation key for view category to store the image load operation. This is used for view instance which supports different image loading process. If nil, will use the class name as operation key. (NSString *)
- */
+// A String to be used as the operation key for view category to store the image load operation. This is used for view instance which supports different image loading process. If nil, will use the class name as operation key. (NSString *)
+// String 类型，用于 view 类别的 key，用于存储图像加载操作。用于支持不同图像加载过程的视图实例。如果为 nil，则使用类名作为操作键。
 FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextSetImageOperationKey;
 
-/**
- A SDWebImageManager instance to control the image download and cache process using in UIImageView+WebCache category and likes. If not provided, use the shared manager (SDWebImageManager *)
- */
+// A SDWebImageManager instance to control the image download and cache process using in UIImageView+WebCache category and likes. If not provided, use the shared manager (SDWebImageManager *)
+// SDWebImageManager 实例类型，在 UIImageView+WebCache 类别和类似类别中，用于控制图像下载和缓存过程。如果未提供，则使用共享管理器。
 FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextCustomManager;
 
-/**
- A id<SDImageTransformer> instance which conforms `SDImageTransformer` protocol. It's used for image transform after the image load finished and store the transformed image to cache. If you provide one, it will ignore the `transformer` in manager and use provided one instead. (id<SDImageTransformer>)
- */
+// A id<SDImageTransformer> instance which conforms `SDImageTransformer` protocol. It's used for image transform after the image load finished and store the transformed image to cache. If you provide one, it will ignore the `transformer` in manager and use provided one instead. (id<SDImageTransformer>)
+// 符合 SDImageTransformer 协议的 id<SDImageTransformer> 实例类型，用于图像加载完成后的图像转换，并将转换后的图像存储到缓存中。
+// 如果未提供，则使用管理器中的「transformer」。
 FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextImageTransformer;
 
-/**
- A CGFloat raw value which specify the image scale factor. The number should be greater than or equal to 1.0. If not provide or the number is invalid, we will use the cache key to specify the scale factor. (NSNumber)
- */
+// A CGFloat raw value which specify the image scale factor. The number should be greater than or equal to 1.0. If not provide or the number is invalid, we will use the cache key to specify the scale factor. (NSNumber)
+// 指定图像换算系数的 CGfloat 类型，数字应大于或等于 1.0。如果未提供，则使用缓存 key 指定换算系数。
 FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextImageScaleFactor;
 
-/**
- A SDImageCacheType raw value which specify the store cache type when the image has just been downloaded and will be stored to the cache. Specify `SDImageCacheTypeNone` to disable cache storage; `SDImageCacheTypeDisk` to store in disk cache only; `SDImageCacheTypeMemory` to store in memory only. And `SDImageCacheTypeAll` to store in both memory cache and disk cache.
- If you use image transformer feature, this actually apply for the transformed image, but not the original image itself. Use `SDWebImageContextOriginalStoreCacheType` if you want to control the original image's store cache type at the same time.
- If not provide or the value is invalid, we will use `SDImageCacheTypeAll`. (NSNumber)
- */
+// A SDImageCacheType raw value which specify the store cache type when the image has just been downloaded and will be stored to the cache. Specify `SDImageCacheTypeNone` to disable cache storage; `SDImageCacheTypeDisk` to store in disk cache only; `SDImageCacheTypeMemory` to store in memory only. And `SDImageCacheTypeAll` to store in both memory cache and disk cache.
+// If you use image transformer feature, this actually apply for the transformed image, but not the original image itself. Use `SDWebImageContextOriginalStoreCacheType` if you want to control the original image's store cache type at the same time.
+// If not provide or the value is invalid, we will use `SDImageCacheTypeAll`. (NSNumber)
+// SDImageCacheType（图像存储类型）类型，该值在图像刚下载并将存储到缓存时指定存储缓存类型。
+// SDImageCacheTypeNone 以禁用缓存存储，SDImageCacheTypeDisk 仅存储在磁盘缓存中，SDImageCacheTypeMemory 仅存储在内存中，SDImageCacheTypeAll 存储在内存缓存和磁盘缓存中。
+// 如果使用图像转换器功能，这实际上适用于转换后的图像，但不适用于原始图像本身。如果要同时控制原始图像的存储缓存类型，请使用下面的 SDWebImageContextOriginalStoreCacheType。
+// 如果未提供或值无效，我们将使用 SDImageCacheTypeAll。
 FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextStoreCacheType;
 
-/**
- The same behavior like `SDWebImageContextStoreCacheType`, but control the store cache type for the original image when you use image transformer feature. This allows the detail control of cache storage for these two images. For example, if you want to store the transformed image into both memory/disk cache, store the original image into disk cache only, use `[.storeCacheType : .all, .originalStoreCacheType : .disk]`
- If not provide or the value is invalid, we will use `SDImageCacheTypeNone`, which does not store the original image into cache. (NSNumber)
- */
+// The same behavior like `SDWebImageContextStoreCacheType`, but control the store cache type for the original image when you use image transformer feature. This allows the detail control of cache storage for these two images. For example, if you want to store the transformed image into both memory/disk cache, store the original image into disk cache only, use `[.storeCacheType : .all, .originalStoreCacheType : .disk]`
+// If not provide or the value is invalid, we will use `SDImageCacheTypeNone`, which does not store the original image into cache. (NSNumber)
+// 与上面 SDWebImageContextStoreCacheType 类似，但在使用图像转换器功能时控制原始图像的存储缓存类型。这允许对这两个图像的缓存存储进行详细控制。
+// 例如，如果要将转换后的图像存储到内存 & 磁盘缓存中，请仅将原始图像存储到磁盘缓存中，使用 [.storecachetype:.all, .originalstorecachetype:.disk]。
+// 如果未提供或值无效，我们将使用 SDImageCacheTypeNone，它不会将原始图像存储到缓存中。
 FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextOriginalStoreCacheType;
 
-/**
- A Class object which the instance is a `UIImage/NSImage` subclass and adopt `SDAnimatedImage` protocol. We will call `initWithData:scale:options:` to create the instance (or `initWithAnimatedCoder:scale:` when using progressive download) . If the instance create failed, fallback to normal `UIImage/NSImage`.
- This can be used to improve animated images rendering performance (especially memory usage on big animated images) with `SDAnimatedImageView` (Class).
- */
+// A Class object which the instance is a `UIImage/NSImage` subclass and adopt `SDAnimatedImage` protocol. We will call `initWithData:scale:options:` to create the instance (or `initWithAnimatedCoder:scale:` when using progressive download) . If the instance create failed, fallback to normal `UIImage/NSImage`.
+// This can be used to improve animated images rendering performance (especially memory usage on big animated images) with `SDAnimatedImageView` (Class).
+// 符合 SDAnimatedImage 协议的 UIImage/NSImage 子类实例对象类型。我们将调用 initWithData:scale:options: 来创建实例（或调用 initWithAnimatedCoder:scale: 渐进式下载）。如果实例创建失败，则回退到正常的 UIImage/NSImage。
+// 这可用于使用 SDAnimatedImageView 提高动画图像的渲染性能（特别是大型动画图像的内存使用）
 FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextAnimatedImageClass;
 
-/**
- A id<SDWebImageDownloaderRequestModifier> instance to modify the image download request. It's used for downloader to modify the original request from URL and options. If you provide one, it will ignore the `requestModifier` in downloader and use provided one instead. (id<SDWebImageDownloaderRequestModifier>)
- */
+// A id<SDWebImageDownloaderRequestModifier> instance to modify the image download request. It's used for downloader to modify the original request from URL and options. If you provide one, it will ignore the `requestModifier` in downloader and use provided one instead. (id<SDWebImageDownloaderRequestModifier>)
+// id<SDWebImageDownloaderRequestModifier> 实例对象类型，用于更改图像下载请求。它用于修改来自 URL 和 options 的原始 request。
+// 如果你提供了一个，它将忽略下载器中的 requestModifier，用提供的这个替换。
 FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextDownloadRequestModifier;
 
-/**
- A id<SDWebImageCacheKeyFilter> instance to convert an URL into a cache key. It's used when manager need cache key to use image cache. If you provide one, it will ignore the `cacheKeyFilter` in manager and use provided one instead. (id<SDWebImageCacheKeyFilter>)
- */
+// A id<SDWebImageCacheKeyFilter> instance to convert an URL into a cache key. It's used when manager need cache key to use image cache. If you provide one, it will ignore the `cacheKeyFilter` in manager and use provided one instead. (id<SDWebImageCacheKeyFilter>)
+// id<SDWebImageCacheKeyFilter> 实例对象类型，将 URL 转换成一个密钥。
+// 如果你提供了一个，它将忽略管理器中的 cachekeyfilter，用提供的这个替换。
 FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextCacheKeyFilter;
 
-/**
- A id<SDWebImageCacheSerializer> instance to convert the decoded image, the source downloaded data, to the actual data. It's used for manager to store image to the disk cache. If you provide one, it will ignore the `cacheSerializer` in manager and use provided one instead. (id<SDWebImageCacheSerializer>)
- */
+// A id<SDWebImageCacheSerializer> instance to convert the decoded image, the source downloaded data, to the actual data. It's used for manager to store image to the disk cache. If you provide one, it will ignore the `cacheSerializer` in manager and use provided one instead. (id<SDWebImageCacheSerializer>)
+// id<SDWebImageCacheSerializer> 实例对象类型，将解码后的图像（下载的源数据）转换为真实数据。它用于管理器将图像存储到磁盘缓存。
+// 如果你提供了一个，它将忽略管理器中的 cacheSerializer，用提供的这个替换。
 FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextCacheSerializer;

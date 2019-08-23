@@ -23,12 +23,14 @@ typedef void (^SDWebImageTransitionPreparesBlock)(__kindof UIView * _Nonnull vie
 typedef void (^SDWebImageTransitionAnimationsBlock)(__kindof UIView * _Nonnull view, UIImage * _Nullable image);
 typedef void (^SDWebImageTransitionCompletionBlock)(BOOL finished);
 
-/**
- This class is used to provide a transition animation after the view category load image finished. Use this on `sd_imageTransition` in UIView+WebCache.h
- for UIKit(iOS & tvOS), we use `+[UIView transitionWithView:duration:options:animations:completion]` for transition animation.
- for AppKit(macOS), we use `+[NSAnimationContext runAnimationGroup:completionHandler:]` for transition animation. You can call `+[NSAnimationContext currentContext]` to grab the context during animations block.
- @note These transition are provided for basic usage. If you need complicated animation, consider to directly use Core Animation or use `SDWebImageAvoidAutoSetImage` and implement your own after image load finished.
- */
+// This class is used to provide a transition animation after the view category load image finished. Use this on `sd_imageTransition` in UIView+WebCache.h
+// for UIKit(iOS & tvOS), we use `+[UIView transitionWithView:duration:options:animations:completion]` for transition animation.
+// for AppKit(macOS), we use `+[NSAnimationContext runAnimationGroup:completionHandler:]` for transition animation. You can call `+[NSAnimationContext currentContext]` to grab the context during animations block.
+// @note These transition are provided for basic usage. If you need complicated animation, consider to directly use Core Animation or use `SDWebImageAvoidAutoSetImage` and implement your own after image load finished.
+// 此类用于在 UIView 类别加载图像完成后提供过渡动画。在 UIView+WebCache.h 中的 `sd_imageTransition` 上使用此选项。
+// 对于 UIKit(iOS & tvOS)，我们使用 `+[UIView transitionWithView:duration:options:animations:completion]` 进行转换动画。
+// 对于 AppKit(macOS)，我们使用 `+[NSAnimationContext runAnimationGroup:completionHandler:]` 进行转换动画。可以调用 `+[NSAnimationContext currentContext]` 在动画 block 期间获取上下文。
+// 注意，这些转换是为基本用法而提供的。如果需要复杂的动画，请考虑直接使用核心动画或 `SDWebImageAvoidAutoSetImage`，并在图像加载完成后实现自己的动画。
 @interface SDWebImageTransition : NSObject
 
 /**

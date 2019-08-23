@@ -52,15 +52,18 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
                      setImageBlock:(nullable SDSetImageBlock)setImageBlock
                           progress:(nullable SDImageLoaderProgressBlock)progressBlock
                          completed:(nullable SDInternalCompletionBlock)completedBlock {
-    context = [context copy]; // copy to avoid mutable object
+    context = [context copy];
+    
+    // 指定加载图像的 UIView 类型类名，如果没有指定，默认设置为当前类型（UIImageView）
     NSString *validOperationKey = context[SDWebImageContextSetImageOperationKey];
     if (!validOperationKey) {
         validOperationKey = NSStringFromClass([self class]);
     }
     self.sd_latestOperationKey = validOperationKey;
-    [self sd_cancelImageLoadOperationWithKey:validOperationKey];
+    [self sd_cancelImageLoadOperationWithKey:validOperationKey];  // 取消当前 UIView 的所有操作
     self.sd_imageURL = url;
     
+    // 如果没有设置延迟加载 placeholder 图像，则先加载 placeholder 图像
     if (!(options & SDWebImageDelayPlaceholder)) {
         dispatch_main_async_safe(^{
             [self sd_setImage:placeholder imageData:nil basedOnClassOrViaCustomSetImageBlock:setImageBlock cacheType:SDImageCacheTypeNone imageURL:url];
@@ -69,14 +72,16 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
     
     if (url) {
         // reset the progress
+        // 重置进度
         NSProgress *imageProgress = objc_getAssociatedObject(self, @selector(sd_imageProgress));
         if (imageProgress) {
-            imageProgress.totalUnitCount = 0;
-            imageProgress.completedUnitCount = 0;
+            imageProgress.totalUnitCount = 0;  // 总计数
+            imageProgress.completedUnitCount = 0;  // 完成计数
         }
         
 #if SD_UIKIT || SD_MAC
         // check and start image indicator
+        // 检查并启动图像指示器
         [self sd_startImageIndicator];
         id<SDWebImageIndicator> imageIndicator = self.sd_imageIndicator;
 #endif
@@ -191,6 +196,7 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
     [self sd_cancelImageLoadOperationWithKey:self.sd_latestOperationKey];
 }
 
+// 加载图像（私有方法）
 - (void)sd_setImage:(UIImage *)image imageData:(NSData *)imageData basedOnClassOrViaCustomSetImageBlock:(SDSetImageBlock)setImageBlock cacheType:(SDImageCacheType)cacheType imageURL:(NSURL *)imageURL {
 #if SD_UIKIT || SD_MAC
     [self sd_setImage:image imageData:imageData basedOnClassOrViaCustomSetImageBlock:setImageBlock transition:nil cacheType:cacheType imageURL:imageURL];
@@ -205,6 +211,7 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
 #endif
 }
 
+// 加载图像（私有方法）
 #if SD_UIKIT || SD_MAC
 - (void)sd_setImage:(UIImage *)image imageData:(NSData *)imageData basedOnClassOrViaCustomSetImageBlock:(SDSetImageBlock)setImageBlock transition:(SDWebImageTransition *)transition cacheType:(SDImageCacheType)cacheType imageURL:(NSURL *)imageURL {
     UIView *view = self;
@@ -234,10 +241,12 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
     }
 #endif
     
+    // 过渡动画
     if (transition) {
 #if SD_UIKIT
         [UIView transitionWithView:view duration:0 options:0 animations:^{
             // 0 duration to let UIKit render placeholder and prepares block
+            // 进度置为 0 并且让 UIKit 呈现占位符并准备 block
             if (transition.prepares) {
                 transition.prepares(view, image, imageData, cacheType, imageURL);
             }
@@ -334,6 +343,7 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
     [self addSubview:view];
 }
 
+// 开始图像指示器
 - (void)sd_startImageIndicator {
     id<SDWebImageIndicator> imageIndicator = self.sd_imageIndicator;
     if (!imageIndicator) {

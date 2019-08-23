@@ -10,10 +10,9 @@
 
 #if SD_UIKIT || SD_MAC
 
-/**
- A protocol to custom the indicator during the image loading.
- All of these methods are called from main queue.
- */
+// A protocol to custom the indicator during the image loading.
+// All of these methods are called from main queue.
+// 在图像加载期间自定义指示器的协议。所有这些方法都是从主队列调用的。
 @protocol SDWebImageIndicator <NSObject>
 
 @required
@@ -24,14 +23,12 @@
  */
 @property (nonatomic, strong, readonly, nonnull) UIView *indicatorView;
 
-/**
- Start the animating for indicator.
- */
+// Start the animating for indicator.
+// 开始指示器的动画
 - (void)startAnimatingIndicator;
 
-/**
- Stop the animating for indicator.
- */
+// Stop the animating for indicator.
+// 停止指示器的动画
 - (void)stopAnimatingIndicator;
 
 @optional
