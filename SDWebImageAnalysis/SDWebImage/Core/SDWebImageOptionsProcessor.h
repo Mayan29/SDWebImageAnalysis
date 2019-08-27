@@ -18,23 +18,16 @@ typedef SDWebImageOptionsResult * _Nullable(^SDWebImageOptionsProcessorBlock)(NS
 // 包含选项和上下文的选项结果
 @interface SDWebImageOptionsResult : NSObject
 
-/**
- WebCache options.
- */
+// WebCache options.
+// WebCache 选项
 @property (nonatomic, assign, readonly) SDWebImageOptions options;
 
-/**
- Context options.
- */
+// Context options.
+// Context 选项
 @property (nonatomic, copy, readonly, nullable) SDWebImageContext *context;
 
-/**
- Create a new options result.
-
- @param options options
- @param context context
- @return The options result contains both options and context.
- */
+// Create a new options result.
+// 创建一个新的选项结果
 - (nonnull instancetype)initWithOptions:(SDWebImageOptions)options context:(nullable SDWebImageContext *)context;
 
 @end

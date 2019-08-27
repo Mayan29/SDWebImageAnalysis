@@ -24,40 +24,30 @@ FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextLoader
 
 #pragma mark - Helper method
 
-/**
- This is the built-in decoding process for image download from network or local file.
- @note If you want to implement your custom loader with `requestImageWithURL:options:context:progress:completed:` API, but also want to keep compatible with SDWebImage's behavior, you'd better use this to produce image.
-
- @param imageData The image data from the network. Should not be nil
- @param imageURL The image URL from the input. Should not be nil
- @param options The options arg from the input
- @param context The context arg from the input
- @return The decoded image for current image data load from the network
- */
+// This is the built-in decoding process for image download from network or local file.
+// @note If you want to implement your custom loader with `requestImageWithURL:options:context:progress:completed:` API, but also want to keep compatible with SDWebImage's behavior, you'd better use this to produce image.
+// 这是用于从网络或本地文件下载图像的内置解码过程。
+// @注意：如果要使用 `requestImageWithURL:options:context:progress:completed:` API 实现自定义加载器，但还希望兼容 SDWebImage，则最好使用此方法生成图像。
 FOUNDATION_EXPORT UIImage * _Nullable SDImageLoaderDecodeImageData(NSData * _Nonnull imageData, NSURL * _Nonnull imageURL, SDWebImageOptions options, SDWebImageContext * _Nullable context);
 
-/**
- This is the built-in decoding process for image progressive download from network. It's used when `SDWebImageProgressiveLoad` option is set. (It's not required when your loader does not support progressive image loading)
- @note If you want to implement your custom loader with `requestImageWithURL:options:context:progress:completed:` API, but also want to keep compatible with SDWebImage's behavior, you'd better use this to produce image.
-
- @param imageData The image data from the network so far. Should not be nil
- @param imageURL The image URL from the input. Should not be nil
- @param finished Pass NO to specify the download process has not finished. Pass YES when all image data has finished.
- @param operation The loader operation associated with current progressive download. Why to provide this is because progressive decoding need to store the partial decoded context for each operation to avoid conflict. You should provide the operation from `loadImageWithURL:` method return value.
- @param options The options arg from the input
- @param context The context arg from the input
- @return The decoded progressive image for current image data load from the network
- */
+// This is the built-in decoding process for image progressive download from network. It's used when `SDWebImageProgressiveLoad` option is set. (It's not required when your loader does not support progressive image loading)
+// @note If you want to implement your custom loader with `requestImageWithURL:options:context:progress:completed:` API, but also want to keep compatible with SDWebImage's behavior, you'd better use this to produce image.
+// operation: The loader operation associated with current progressive download. Why to provide this is because progressive decoding need to store the partial decoded context for each operation to avoid conflict. You should provide the operation from `loadImageWithURL:` method return value.
+// 这是用于从网络渐进式下载图像的内置解码过程。当设置 `SDWebImageProgressiveLoad` 选项时使用。（加载程序不支持渐进式图像加载时不需要）
+// 注意：如果要使用 `requestImageWithURL:options:context:progress:completed:` API 实现自定义加载器，但还希望兼容 SDWebImage，则最好使用此方法生成图像。
+// operation: 与当前渐进式下载相关联的加载器操作。为什么提供这个是因为渐进式解码需要为每个操作存储部分解码的上下文以避免冲突。你应该从 `loadImageWithURL:` 方法返回值中提供操作。
 FOUNDATION_EXPORT UIImage * _Nullable SDImageLoaderDecodeProgressiveImageData(NSData * _Nonnull imageData, NSURL * _Nonnull imageURL, BOOL finished,  id<SDWebImageOperation> _Nonnull operation, SDWebImageOptions options, SDWebImageContext * _Nullable context);
 
 #pragma mark - SDImageLoader
 
-/**
- This is the protocol to specify custom image load process. You can create your own class to conform this protocol and use as a image loader to load image from network or any avaiable remote resources defined by yourself.
- If you want to implement custom loader for image download from network or local file, you just need to concentrate on image data download only. After the download finish, call `SDImageLoaderDecodeImageData` or `SDImageLoaderDecodeProgressiveImageData` to use the built-in decoding process and produce image (Remember to call in the global queue). And finally callback the completion block.
- If you directlly get the image instance using some third-party SDKs, such as image directlly from Photos framework. You can process the image data and image instance by yourself without that built-in decoding process. And finally callback the completion block.
- @note It's your responsibility to load the image in the desired global queue(to avoid block main queue). We do not dispatch these method call in a global queue but just from the call queue (For `SDWebImageManager`, it typically call from the main queue).
-*/
+// This is the protocol to specify custom image load process. You can create your own class to conform this protocol and use as a image loader to load image from network or any avaiable remote resources defined by yourself.
+// If you want to implement custom loader for image download from network or local file, you just need to concentrate on image data download only. After the download finish, call `SDImageLoaderDecodeImageData` or `SDImageLoaderDecodeProgressiveImageData` to use the built-in decoding process and produce image (Remember to call in the global queue). And finally callback the completion block.
+// If you directlly get the image instance using some third-party SDKs, such as image directlly from Photos framework. You can process the image data and image instance by yourself without that built-in decoding process. And finally callback the completion block.
+// @note It's your responsibility to load the image in the desired global queue(to avoid block main queue). We do not dispatch these method call in a global queue but just from the call queue (For `SDWebImageManager`, it typically call from the main queue).
+// 这是指定自定义图像加载过程的协议。你可以创建自己的类以符合此协议，并将其用作图像加载器，从网络或自己定义的任何可用远程资源加载图像。
+// 如果你想实现从网络或本地文件下载图像的自定义加载器，只需专注于下载图像数据即可。下载完成后，调用 `SDImageLoaderDecodeImageData` 或 `SDImageLoaderDecodeProgressiveImageData` 以使用内置解码过程并生成图像（请记住调用全局队列）。最后回调完成 block。
+// 如果你使用某些第三方 SDK 直接获取图像实例，例如直接从 Photos framework 获取图像。你可以自己处理图像数据和图像实例，而无需使用内置解码过程。最后回调完成 block。
+// 注意：你有责任将图像加载到所需的全局队列中（以避免阻塞主队列）。我们只从调用队列，而不是全局队列中调用这些方法（对于 `SDWebImageManager`，它通常从主队列调用）。
 @protocol SDImageLoader <NSObject>
 
 /**

@@ -17,6 +17,7 @@
 @end
 
 /// NSOperation conform to `SDWebImageOperation`.
+/// 符合 `SDWebImageOperation` 协议的 NSOperation
 @interface NSOperation (SDWebImageOperation) <SDWebImageOperation>
 
 @end

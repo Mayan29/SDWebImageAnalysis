@@ -29,19 +29,16 @@ typedef void(^SDInternalCompletionBlock)(UIImage * _Nullable image, NSData * _Nu
 // 表示缓存和加载操作的组合操作。你可以使用它取消加载过程。
 @interface SDWebImageCombinedOperation : NSObject <SDWebImageOperation>
 
-/**
- Cancel the current operation, including cache and loader process
- */
+// Cancel the current operation, including cache and loader process
+// 取消当前操作，包括缓存和加载程序进程
 - (void)cancel;
 
-/**
- The cache operation from the image cache query
- */
+// The cache operation from the image cache query
+// 来自图像缓存查询的缓存操作
 @property (strong, nonatomic, nullable, readonly) id<SDWebImageOperation> cacheOperation;
 
-/**
- The loader operation from the image loader (such as download operation)
- */
+// The loader operation from the image loader (such as download operation)
+// 来自图像加载器的加载器操作（例如下载操作）
 @property (strong, nonatomic, nullable, readonly) id<SDWebImageOperation> loaderOperation;
 
 @end
@@ -110,14 +107,12 @@ SDWebImageManager *manager = [SDWebImageManager sharedManager];
  */
 @property (weak, nonatomic, nullable) id <SDWebImageManagerDelegate> delegate;
 
-/**
- * The image cache used by manager to query image cache.
- */
+// The image cache used by manager to query image cache.
+// 用于查询图像缓存的图像缓存。
 @property (strong, nonatomic, readonly, nonnull) id<SDImageCache> imageCache;
 
-/**
- * The image loader used by manager to load image.
- */
+// The image loader used by manager to load image.
+// 用于加载图像的图像加载器
 @property (strong, nonatomic, readonly, nonnull) id<SDImageLoader> imageLoader;
 
 // The image transformer for manager. It's used for image transform after the image load finished and store the transformed image to cache, see `SDImageTransformer`.
@@ -227,31 +222,30 @@ SDWebImageManager *manager = [SDWebImageManager sharedManager];
  */
 - (nonnull instancetype)initWithCache:(nonnull id<SDImageCache>)cache loader:(nonnull id<SDImageLoader>)loader NS_DESIGNATED_INITIALIZER;
 
-/**
- * Downloads the image at the given URL if not present in cache or return the cached version otherwise.
- *
- * @param url            The URL to the image
- * @param options        A mask to specify options to use for this request
- * @param progressBlock  A block called while image is downloading
- *                       @note the progress block is executed on a background queue
- * @param completedBlock A block called when operation has been completed.
- *
- *   This parameter is required.
- * 
- *   This block has no return value and takes the requested UIImage as first parameter and the NSData representation as second parameter.
- *   In case of error the image parameter is nil and the third parameter may contain an NSError.
- *
- *   The forth parameter is an `SDImageCacheType` enum indicating if the image was retrieved from the local cache
- *   or from the memory cache or from the network.
- *
- *   The fith parameter is set to NO when the SDWebImageProgressiveLoad option is used and the image is
- *   downloading. This block is thus called repeatedly with a partial image. When image is fully downloaded, the
- *   block is called a last time with the full image and the last parameter set to YES.
- *
- *   The last parameter is the original image URL
- *
- * @return Returns an instance of SDWebImageCombinedOperation, which you can cancel the loading process.
- */
+
+// Downloads the image at the given URL if not present in cache or return the cached version otherwise.
+// 如果缓存中不存在，则下载给定 URL 的图像，否则返回缓存的版本。
+
+// progressBlock: A block called while image is downloading
+// @note the progress block is executed on a background queue
+// progressblock: 图像下载时调用的 block
+// 注意：进度 block 是在后台队列上执行的。
+
+// completedBlock: A block called when operation has been completed.
+// This parameter is required.
+// This block has no return value and takes the requested UIImage as first parameter and the NSData representation as second parameter. In case of error the image parameter is nil and the third parameter may contain an NSError.
+// The forth parameter is an `SDImageCacheType` enum indicating if the image was retrieved from the local cache or from the memory cache or from the network.
+// The fith parameter is set to NO when the SDWebImageProgressiveLoad option is used and the image is downloading. This block is thus called repeatedly with a partial image. When image is fully downloaded, the block is called a last time with the full image and the last parameter set to YES.
+// The last parameter is the original image URL
+// completedBlock: 操作完成后调用的 block
+// 这个参数是必需的。
+// 这个 block 没有返回值，将请求的 UIImage 作为第一个参数，NSData 作为第二个参数。如果出现错误，image 参数为 nil，第三个参数可能包含 NSError。
+// 第四个参数是 `SDImageCacheType` 枚举，指示图像是从本地缓存还是从内存缓存或网络中检索的。
+// 使用 SDWebImageProgressiveLoad 选项并下载图像时，第五个参数设置为 NO。因此，使用部分图像重复调用这个 block。当图像完全下载时，这个 block 将在最后一次调用时将完整图像和最后一个参数设置为 YES。
+// 最后一个参数是原始图像 URL
+
+// @return Returns an instance of SDWebImageCombinedOperation, which you can cancel the loading process.
+// 返回 SDWebImageCombinedOperation 的实例，你可以取消加载过程。
 - (nullable SDWebImageCombinedOperation *)loadImageWithURL:(nullable NSURL *)url
                                                    options:(SDWebImageOptions)options
                                                   progress:(nullable SDImageLoaderProgressBlock)progressBlock

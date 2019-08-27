@@ -371,16 +371,19 @@
     id<SDImageTransformer> transformer = context[SDWebImageContextImageTransformer];
     if (transformer) {
         // grab the transformed disk image if transformer provided
+        // 如果提供转换器，则获取转换后的磁盘图像
         NSString *transformerKey = [transformer transformerKey];
         key = SDTransformedKeyForKey(key, transformerKey);
     }
     
     // First check the in-memory cache...
+    // 1. 检查内存缓存
     UIImage *image = [self imageFromMemoryCacheForKey:key];
     
     if (image) {
         if (options & SDImageCacheDecodeFirstFrameOnly) {
             // Ensure static image
+            // 保证静态图像
             Class animatedImageClass = image.class;
             if (image.sd_isAnimated || ([animatedImageClass isSubclassOfClass:[UIImage class]] && [animatedImageClass conformsToProtocol:@protocol(SDAnimatedImage)])) {
 #if SD_MAC
@@ -408,6 +411,7 @@
     }
     
     // Second check the disk cache...
+    // 2. 检查磁盘缓存
     NSOperation *operation = [NSOperation new];
     // Check whether we need to synchronously query disk
     // 1. in-memory cache hit & memoryDataSync

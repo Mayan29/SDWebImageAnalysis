@@ -48,9 +48,8 @@ typedef void (^SDWebImageTransitionCompletionBlock)(BOOL finished);
  A mask of options indicating how you want to perform the animations.
  */
 @property (nonatomic, assign) SDWebImageAnimationOptions animationOptions;
-/**
- A block object to be executed before the animation sequence starts.
- */
+// A block object to be executed before the animation sequence starts.
+// 在动画序列开始之前要执行的 block 对象。
 @property (nonatomic, copy, nullable) SDWebImageTransitionPreparesBlock prepares;
 // A block object that contains the changes you want to make to the specified view.
 // 包含要对指定视图进行的更改的 block 对象

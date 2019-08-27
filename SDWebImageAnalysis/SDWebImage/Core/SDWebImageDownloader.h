@@ -129,9 +129,8 @@ typedef SDImageLoaderCompletedBlock SDWebImageDownloaderCompletedBlock;
 @end
 
 
-/**
- * Asynchronous downloader dedicated and optimized for image loading.
- */
+// Asynchronous downloader dedicated and optimized for image loading.
+// 专门为图像加载而优化的异步下载器。
 @interface SDWebImageDownloader : NSObject
 
 /**
@@ -280,11 +279,12 @@ typedef SDImageLoaderCompletedBlock SDWebImageDownloaderCompletedBlock;
 @end
 
 
-/**
- SDWebImageDownloader is the built-in image loader conform to `SDImageLoader`. Which provide the HTTP/HTTPS/FTP download, or local file URL using NSURLSession.
- However, this downloader class itself also support customization for advanced users. You can specify `operationClass` in download config to custom download operation, See `SDWebImageDownloaderOperation`.
- If you want to provide some image loader which beyond network or local file, consider to create your own custom class conform to `SDImageLoader`.
- */
+// SDWebImageDownloader is the built-in image loader conform to `SDImageLoader`. Which provide the HTTP/HTTPS/FTP download, or local file URL using NSURLSession.
+// However, this downloader class itself also support customization for advanced users. You can specify `operationClass` in download config to custom download operation, See `SDWebImageDownloaderOperation`.
+// If you want to provide some image loader which beyond network or local file, consider to create your own custom class conform to `SDImageLoader`.
+// SDWebImageDownloader 是遵守 `SDImageLoader` 的内置图像加载器。它使用 NSURLSession 提供 HTTP/HTTPS/FTP 下载或本地文件 URL。
+// 然鹅，这个下载器 class 本身也支持为高级用户定制。你可以在下载配置中将 `operationClass` 指定为自定义下载操作，请参见 `SDWebImageDownloaderOperation`。
+// 如果要提供一些超出网络或本地文件的图像加载器，请考虑创建符合 `SDImageLoader` 的自定义类。
 @interface SDWebImageDownloader (SDImageLoader) <SDImageLoader>
 
 @end

@@ -159,6 +159,7 @@ static id<SDImageLoader> _defaultImageLoader;
     SDWebImageOptionsResult *result = [self processedResultForURL:url options:options context:context];
     
     // Start the entry to load image from cache
+    // 开始进入从缓存加载图像的入口，仅此一处调用
     [self callCacheProcessForOperation:operation url:url options:result.options context:result.context progress:progressBlock completed:completedBlock];
 
     return operation;
@@ -182,6 +183,7 @@ static id<SDImageLoader> _defaultImageLoader;
 #pragma mark - Private
 
 // Query cache process
+// 查询缓存进程，私有方法
 - (void)callCacheProcessForOperation:(nonnull SDWebImageCombinedOperation *)operation
                                  url:(nonnull NSURL *)url
                              options:(SDWebImageOptions)options
@@ -189,6 +191,7 @@ static id<SDImageLoader> _defaultImageLoader;
                             progress:(nullable SDImageLoaderProgressBlock)progressBlock
                            completed:(nullable SDInternalCompletionBlock)completedBlock {
     // Check whether we should query cache
+    // 检查是否我们应该查询缓存
     BOOL shouldQueryCache = (options & SDWebImageFromLoaderOnly) == 0;
     if (shouldQueryCache) {
         id<SDWebImageCacheKeyFilter> cacheKeyFilter = context[SDWebImageContextCacheKeyFilter];
@@ -198,15 +201,18 @@ static id<SDImageLoader> _defaultImageLoader;
             @strongify(operation);
             if (!operation || operation.isCancelled) {
                 // Image combined operation cancelled by user
+                // 用户取消了图像组合操作
                 [self callCompletionBlockForOperation:operation completion:completedBlock error:[NSError errorWithDomain:SDWebImageErrorDomain code:SDWebImageErrorCancelled userInfo:nil] url:url];
                 [self safelyRemoveOperationFromRunning:operation];
                 return;
             }
             // Continue download process
+            // 继续下载进程
             [self callDownloadProcessForOperation:operation url:url options:options context:context cachedImage:cachedImage cachedData:cachedData cacheType:cacheType progress:progressBlock completed:completedBlock];
         }];
     } else {
         // Continue download process
+        // 继续下载进程
         [self callDownloadProcessForOperation:operation url:url options:options context:context cachedImage:nil cachedData:nil cacheType:SDImageCacheTypeNone progress:progressBlock completed:completedBlock];
     }
 }
@@ -368,6 +374,7 @@ static id<SDImageLoader> _defaultImageLoader;
     SD_UNLOCK(self.runningOperationsLock);
 }
 
+// 私有方法
 - (void)callCompletionBlockForOperation:(nullable SDWebImageCombinedOperation*)operation
                              completion:(nullable SDInternalCompletionBlock)completionBlock
                                   error:(nullable NSError *)error
@@ -375,6 +382,7 @@ static id<SDImageLoader> _defaultImageLoader;
     [self callCompletionBlockForOperation:operation completion:completionBlock image:nil data:nil error:error cacheType:SDImageCacheTypeNone finished:YES url:url];
 }
 
+// 私有方法
 - (void)callCompletionBlockForOperation:(nullable SDWebImageCombinedOperation*)operation
                              completion:(nullable SDInternalCompletionBlock)completionBlock
                                   image:(nullable UIImage *)image

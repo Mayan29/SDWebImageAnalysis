@@ -55,10 +55,8 @@ typedef NS_OPTIONS(NSUInteger, SDImageCacheOptions) {
     SDImageCacheMatchAnimatedImageClass = 1 << 7,
 };
 
-/**
- * SDImageCache maintains a memory cache and a disk cache. Disk cache write operations are performed
- * asynchronous so it doesn’t add unnecessary latency to the UI.
- */
+// SDImageCache maintains a memory cache and a disk cache. Disk cache write operations are performed asynchronous so it doesn’t add unnecessary latency to the UI.
+// SDImageCache 维护一个内存缓存和一个磁盘缓存。磁盘缓存写入操作是异步执行的，因此不会给 UI 增加不必要的延迟。
 @interface SDImageCache : NSObject
 
 #pragma mark - Properties
@@ -69,11 +67,12 @@ typedef NS_OPTIONS(NSUInteger, SDImageCacheOptions) {
  */
 @property (nonatomic, copy, nonnull, readonly) SDImageCacheConfig *config;
 
-/**
- * The memory cache implementation object used for current image cache.
- * By default we use `SDMemoryCache` class, you can also use this to call your own implementation class method.
- * @note To customize this class, check `SDImageCacheConfig.memoryCacheClass` property.
- */
+// The memory cache implementation object used for current image cache.
+// By default we use `SDMemoryCache` class, you can also use this to call your own implementation class method.
+// @note To customize this class, check `SDImageCacheConfig.memoryCacheClass` property.
+// 用于当前图像缓存的内存缓存实现对象。
+// 通常我们使用 `SDMemoryCache` 类，你也可以使用它调用自己的实现类方法。
+// 注意：若要自定义此类，请选择 `SDImageCacheConfig.memoryCacheClass` 属性。
 @property (nonatomic, strong, readonly, nonnull) id<SDMemoryCache> memoryCache;
 
 /**

@@ -9,10 +9,10 @@
 #import "SDWebImageCompat.h"
 #import "SDWebImageOperation.h"
 
-/**
- These methods are used to support canceling for UIView image loading, it's designed to be used internal but not external.
- All the stored operations are weak, so it will be dalloced after image loading finished. If you need to store operations, use your own class to keep a strong reference for them.
- */
+// These methods are used to support canceling for UIView image loading, it's designed to be used internal but not external.
+// All the stored operations are weak, so it will be dalloced after image loading finished. If you need to store operations, use your own class to keep a strong reference for them.
+// 这些方法用于支持取消 UIView 图像加载，它被设计为内部而非外部使用。
+// 所有存储操作都是 weak，因此在图像加载完成后将对其释放。如果需要存储操作，请使用您自己的类为它们保留一个强引用。
 @interface UIView (WebCacheOperation)
 
 /**

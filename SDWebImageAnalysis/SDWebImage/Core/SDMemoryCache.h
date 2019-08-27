@@ -9,9 +9,8 @@
 #import "SDWebImageCompat.h"
 
 @class SDImageCacheConfig;
-/**
- A protocol to allow custom memory cache used in SDImageCache.
- */
+// A protocol to allow custom memory cache used in SDImageCache.
+// 允许在 SDImageCache 中使用自定义内存缓存的协议。
 @protocol SDMemoryCache <NSObject>
 
 @required
@@ -23,12 +22,8 @@
  */
 - (nonnull instancetype)initWithConfig:(nonnull SDImageCacheConfig *)config;
 
-/**
- Returns the value associated with a given key.
- 
- @param key An object identifying the value. If nil, just return nil.
- @return The value associated with key, or nil if no value is associated with key.
- */
+// Returns the value associated with a given key.
+// 返回与给定 key 关联的 value。
 - (nullable id)objectForKey:(nonnull id)key;
 
 /**
@@ -67,9 +62,8 @@
 
 @end
 
-/**
- A memory cache which auto purge the cache on memory warning and support weak cache.
- */
+// A memory cache which auto purge the cache on memory warning and support weak cache.
+// 一种内存缓存，在内存出现警告时自动清除缓存并支持 weak 缓存。
 @interface SDMemoryCache <KeyType, ObjectType> : NSCache <KeyType, ObjectType> <SDMemoryCache>
 
 @property (nonatomic, strong, nonnull, readonly) SDImageCacheConfig *config;
