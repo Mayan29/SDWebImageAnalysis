@@ -60,6 +60,7 @@
         NSAssert(ns, @"Cache namespace should not be nil");
         
         // Create IO serial queue
+        // 创建 IO 串行队列
         _ioQueue = dispatch_queue_create("com.hackemist.SDImageCache", DISPATCH_QUEUE_SERIAL);
         
         if (!config) {

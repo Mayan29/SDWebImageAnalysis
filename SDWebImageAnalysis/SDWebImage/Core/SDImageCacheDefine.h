@@ -58,11 +58,12 @@ typedef void(^SDImageCacheContainsCompletionBlock)(SDImageCacheType containsCach
  */
 FOUNDATION_EXPORT UIImage * _Nullable SDImageCacheDecodeImageData(NSData * _Nonnull imageData, NSString * _Nonnull cacheKey, SDWebImageOptions options, SDWebImageContext * _Nullable context);
 
-/**
- This is the image cache protocol to provide custom image cache for `SDWebImageManager`.
- Though the best practice to custom image cache, is to write your own class which conform `SDMemoryCache` or `SDDiskCache` protocol for `SDImageCache` class (See more on `SDImageCacheConfig.memoryCacheClass & SDImageCacheConfig.diskCacheClass`).
- However, if your own cache implementation contains more advanced feature beyond `SDImageCache` itself, you can consider to provide this instead. For example, you can even use a cache manager like `SDImageCachesManager` to register multiple caches.
- */
+// This is the image cache protocol to provide custom image cache for `SDWebImageManager`.
+// Though the best practice to custom image cache, is to write your own class which conform `SDMemoryCache` or `SDDiskCache` protocol for `SDImageCache` class (See more on `SDImageCacheConfig.memoryCacheClass & SDImageCacheConfig.diskCacheClass`).
+// However, if your own cache implementation contains more advanced feature beyond `SDImageCache` itself, you can consider to provide this instead. For example, you can even use a cache manager like `SDImageCachesManager` to register multiple caches.
+// 这是为 `SDWebImageManager` 提供自定义图像缓存的图像缓存协议。
+// 虽然自定义图像缓存的最佳方案是编写自己的类，该类符合 `SDMemoryCache` 类的 `SDMemoryCache` 或 `SDDiskCache` 协议（请参见 `SDImageCacheConfig.memoryCacheClass & SDImageCacheConfig.diskCacheClass` 上的详细信息）。
+// 但是，如果你自己的缓存实现包含了比 `SDImageCache` 本身更高级的功能，则可以考虑提供此功能。例如，你甚至可以使用类似 `SDImageCachesManager` 的缓存管理器来注册多个缓存。
 @protocol SDImageCache <NSObject>
 
 @required

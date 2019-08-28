@@ -15,43 +15,39 @@
 #import "SDDiskCache.h"
 
 /// Image Cache Options
+/// 图像缓存选项
 typedef NS_OPTIONS(NSUInteger, SDImageCacheOptions) {
-    /**
-     * By default, we do not query image data when the image is already cached in memory. This mask can force to query image data at the same time. However, this query is asynchronously unless you specify `SDImageCacheQueryMemoryDataSync`
-     */
+    // By default, we do not query image data when the image is already cached in memory. This mask can force to query image data at the same time. However, this query is asynchronously unless you specify `SDImageCacheQueryMemoryDataSync`
+    // 默认情况下，当图像已缓存在内存中时，我们不会查询图像数据。此标识可以强制同时查询图像数据。但是，除非指定 `SDImageCacheQueryMemoryDataSync` 否则此查询是异步的
     SDImageCacheQueryMemoryData = 1 << 0,
-    /**
-     * By default, when you only specify `SDImageCacheQueryMemoryData`, we query the memory image data asynchronously. Combined this mask as well to query the memory image data synchronously.
-     */
+    // By default, when you only specify `SDImageCacheQueryMemoryData`, we query the memory image data asynchronously. Combined this mask as well to query the memory image data synchronously.
+    // 默认情况下，当你只指定 `SDImageCacheQueryMemoryData` 时，我们会异步查询内存图像数据。同时结合此标识来同步查询内存图像数据。
     SDImageCacheQueryMemoryDataSync = 1 << 1,
-    /**
-     * By default, when the memory cache miss, we query the disk cache asynchronously. This mask can force to query disk cache (when memory cache miss) synchronously.
-     @note These 3 query options can be combined together. For the full list about these masks combination, see wiki page.
-     */
+    // By default, when the memory cache miss, we query the disk cache asynchronously. This mask can force to query disk cache (when memory cache miss) synchronously.
+    // @note These 3 query options can be combined together. For the full list about these masks combination, see wiki page.
+    // 默认情况下，当内存缓存 miss 时，我们异步查询磁盘缓存。此标识可以强制同步查询磁盘缓存（当内存缓存 miss 时）。
+    // 注意：这 3 个查询选项可以组合在一起。有关这些标识组合的完整列表，请参见 wiki 页面。
     SDImageCacheQueryDiskDataSync = 1 << 2,
-    /**
-     * By default, images are decoded respecting their original size. On iOS, this flag will scale down the
-     * images to a size compatible with the constrained memory of devices.
-     */
+    // By default, images are decoded respecting their original size. On iOS, this flag will scale down the images to a size compatible with the constrained memory of devices.
+    // 默认情况下，图像会根据其原始大小进行解码。在 iOS 上，此标识会将图像缩小到与设备的受限内存兼容的大小。
     SDImageCacheScaleDownLargeImages = 1 << 3,
-    /**
-     * By default, we will decode the image in the background during cache query and download from the network. This can help to improve performance because when rendering image on the screen, it need to be firstly decoded. But this happen on the main queue by Core Animation.
-     * However, this process may increase the memory usage as well. If you are experiencing a issue due to excessive memory consumption, This flag can prevent decode the image.
-     */
+    // By default, we will decode the image in the background during cache query and download from the network. This can help to improve performance because when rendering image on the screen, it need to be firstly decoded. But this happen on the main queue by Core Animation.
+    // However, this process may increase the memory usage as well. If you are experiencing a issue due to excessive memory consumption, This flag can prevent decode the image.
+    // 默认情况下，我们将在缓存查询期间在后台解码图像并从网络下载。这有助于提高性能，因为在屏幕上渲染图像时，需要首先对其进行解码。但这发生在 Core Animation 的主队列中。
+    // 但是，此过程也可能会增加内存使用量。如果由于过多的内存消耗而遇到问题，此标识可以防止解码图像。
     SDImageCacheAvoidDecodeImage = 1 << 4,
-    /**
-     * By default, we decode the animated image. This flag can force decode the first frame only and produece the static image.
-     */
+    // By default, we decode the animated image. This flag can force decode the first frame only and produece the static image.
+    // 默认情况下，我们解码动画图像。此标志只能强制解码第一帧并生成静态图像。
     SDImageCacheDecodeFirstFrameOnly = 1 << 5,
-    /**
-     * By default, for `SDAnimatedImage`, we decode the animated image frame during rendering to reduce memory usage. This flag actually trigger `preloadAllAnimatedImageFrames = YES` after image load from disk cache
-     */
+    // By default, for `SDAnimatedImage`, we decode the animated image frame during rendering to reduce memory usage. This flag actually trigger `preloadAllAnimatedImageFrames = YES` after image load from disk cache
+    // 默认情况下，对于 `SDAnimatedImage`，我们在渲染过程中解码动画图像帧，以减少内存使用。从磁盘缓存加载图像后，此标志实际会触发 `preloadAllAnimatedImageFrames = YES`
     SDImageCachePreloadAllFrames = 1 << 6,
-    /**
-     * By default, when you use `SDWebImageContextAnimatedImageClass` context option (like using `SDAnimatedImageView` which designed to use `SDAnimatedImage`), we may still use `UIImage` when the memory cache hit, or image decoder is not available, to behave as a fallback solution.
-     * Using this option, can ensure we always produce image with your provided class. If failed, a error with code `SDWebImageErrorBadImageData` will been used.
-     * Note this options is not compatible with `SDImageCacheDecodeFirstFrameOnly`, which always produce a UIImage/NSImage.
-     */
+    // By default, when you use `SDWebImageContextAnimatedImageClass` context option (like using `SDAnimatedImageView` which designed to use `SDAnimatedImage`), we may still use `UIImage` when the memory cache hit, or image decoder is not available, to behave as a fallback solution.
+    // Using this option, can ensure we always produce image with your provided class. If failed, a error with code `SDWebImageErrorBadImageData` will been used.
+    // Note this options is not compatible with `SDImageCacheDecodeFirstFrameOnly`, which always produce a UIImage/NSImage.
+    // 默认情况下，当你使用 `SDWebImageContextAnimatedImageClass` 上下文选项时（比如使用 `SDAnimatedImageView` 设计使用 `SDAnimatedImage`），当内存缓存或图像解码器不可用时，我们仍然可以使用 `UIImage` 作为后备解决方案。
+    // 使用此选项，可以确保我们始终使用你提供的 class 生成图像。如果失败，将使用代码为 `SDWebImageErrorBadImageData` 的错误。
+    // 注意这个选项与 `SDImageCacheDecodeFirstFrameOnly` 不兼容，后者始终生成 UIImage/NSImage。
     SDImageCacheMatchAnimatedImageClass = 1 << 7,
 };
 
@@ -97,9 +93,8 @@ typedef NS_OPTIONS(NSUInteger, SDImageCacheOptions) {
 
 #pragma mark - Singleton and initialization
 
-/**
- * Returns global shared cache instance
- */
+// Returns global shared cache instance
+// 返回全局共享缓存实例
 @property (nonatomic, class, readonly, nonnull) SDImageCache *sharedImageCache;
 
 /**
@@ -360,9 +355,8 @@ typedef NS_OPTIONS(NSUInteger, SDImageCacheOptions) {
 
 @end
 
-/**
- * SDImageCache is the built-in image cache implementation for web image manager. It adopts `SDImageCache` protocol to provide the function for web image manager to use for image loading process.
- */
+// SDImageCache is the built-in image cache implementation for web image manager. It adopts `SDImageCache` protocol to provide the function for web image manager to use for image loading process.
+// SDImageCache 是 Web 图像管理器的内置图像缓存实现。它采用 `SDImageCache` 协议为 Web 图像管理器提供用于图像加载过程的功能。
 @interface SDImageCache (SDImageCache) <SDImageCache>
 
 @end
