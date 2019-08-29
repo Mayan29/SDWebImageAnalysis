@@ -54,6 +54,8 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
 + (void)initialize {
     // Bind SDNetworkActivityIndicator if available (download it here: http://github.com/rs/SDNetworkActivityIndicator )
     // To use it, just add #import "SDNetworkActivityIndicator.h" in addition to the SDWebImage import
+    // 如果可用，绑定 SDNetworkActivityIndicator（请在此处下载：http://github.com/rs/sdnetworkactivityindicator）
+    // 要使用它，只需在 SDWebImage 导入之外添加 #import "SDNetworkActivityIndicator.h"
     if (NSClassFromString(@"SDNetworkActivityIndicator")) {
 
 #pragma clang diagnostic push
@@ -111,6 +113,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
         userAgent = [NSString stringWithFormat:@"%@/%@ (Mac OS X %@)", [[NSBundle mainBundle] infoDictionary][(__bridge NSString *)kCFBundleExecutableKey] ?: [[NSBundle mainBundle] infoDictionary][(__bridge NSString *)kCFBundleIdentifierKey], [[NSBundle mainBundle] infoDictionary][@"CFBundleShortVersionString"] ?: [[NSBundle mainBundle] infoDictionary][(__bridge NSString *)kCFBundleVersionKey], [[NSProcessInfo processInfo] operatingSystemVersionString]];
 #endif
         if (userAgent) {
+            // 如果不能转码
             if (![userAgent canBeConvertedToEncoding:NSASCIIStringEncoding]) {
                 NSMutableString *mutableUserAgent = [userAgent mutableCopy];
                 if (CFStringTransform((__bridge CFMutableStringRef)(mutableUserAgent), NULL, (__bridge CFStringRef)@"Any-Latin; Latin-ASCII; [:^ASCII:] Remove", false)) {
@@ -127,11 +130,10 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
         if (!sessionConfiguration) {
             sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
         }
-        /**
-         *  Create the session for this task
-         *  We send nil as delegate queue so that the session creates a serial operation queue for performing all delegate
-         *  method calls and completion handler calls.
-         */
+        // Create the session for this task
+        // We send nil as delegate queue so that the session creates a serial operation queue for performing all delegate method calls and completion handler calls.
+        // 为此任务创建会话
+        // 我们将 nil 作为代理队列发送，以便会话创建用于执行所有代理方法调用和完成处理程序调用的串行操作队列。
         _session = [NSURLSession sessionWithConfiguration:sessionConfiguration
                                                  delegate:self
                                             delegateQueue:nil];

@@ -163,9 +163,8 @@ typedef SDImageLoaderCompletedBlock SDWebImageDownloaderCompletedBlock;
  */
 @property (nonatomic, assign, readonly) NSUInteger currentDownloadCount;
 
-/**
- *  Returns the global shared downloader instance. Which use the `SDWebImageDownloaderConfig.defaultDownloaderConfig` config.
- */
+// Returns the global shared downloader instance. Which use the `SDWebImageDownloaderConfig.defaultDownloaderConfig` config.
+// 返回全局共享下载器实例。使用 `SDWebImageDownloaderConfig.defaultDownloaderConfig` 配置。
 @property (nonatomic, class, readonly, nonnull) SDWebImageDownloader *sharedDownloader;
 
 /**

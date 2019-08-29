@@ -199,16 +199,16 @@ SDWebImageManager *manager = [SDWebImageManager sharedManager];
  */
 @property (nonatomic, assign, readonly, getter=isRunning) BOOL running;
 
-/**
- The default image cache when the manager which is created with no arguments. Such as shared manager or init.
- Defaults to nil. Means using `SDImageCache.sharedImageCache`
- */
+// The default image cache when the manager which is created with no arguments. Such as shared manager or init.
+// Defaults to nil. Means using `SDImageCache.sharedImageCache`
+// 默认的图像缓存，管理器不带参数创建的。例如共享管理器或者初始化。
+// 默认为 nil。表示使用 `SDImageCache.sharedImageCache`
 @property (nonatomic, class, nullable) id<SDImageCache> defaultImageCache;
 
-/**
- The default image loader for manager which is created with no arguments. Such as shared manager or init.
- Defaults to nil. Means using `SDWebImageDownloader.sharedDownloader`
- */
+// The default image loader for manager which is created with no arguments. Such as shared manager or init.
+// Defaults to nil. Means using `SDWebImageDownloader.sharedDownloader`
+// 默认图像加载器，管理器不带参数创建的。例如共享管理器或者初始化。
+// 默认为 nil。表示使用 `SDWebImageDownloader.sharedDownloader`
 @property (nonatomic, class, nullable) id<SDImageLoader> defaultImageLoader;
 
 /**
