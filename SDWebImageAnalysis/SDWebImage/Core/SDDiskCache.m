@@ -113,6 +113,7 @@
     NSURL *diskCacheURL = [NSURL fileURLWithPath:self.diskCachePath isDirectory:YES];
     
     // Compute content date key to be used for tests
+    // 计算用于测试的内容日期密钥
     NSURLResourceKey cacheContentDateKey = NSURLContentModificationDateKey;
     switch (self.config.diskCacheExpireType) {
         case SDImageCacheConfigExpireTypeAccessDate:
@@ -130,6 +131,7 @@
     NSArray<NSString *> *resourceKeys = @[NSURLIsDirectoryKey, cacheContentDateKey, NSURLTotalFileAllocatedSizeKey];
     
     // This enumerator prefetches useful properties for our cache files.
+    // 此枚举为我们的缓存文件预先载入有用的属性。
     NSDirectoryEnumerator *fileEnumerator = [self.fileManager enumeratorAtURL:diskCacheURL
                                                includingPropertiesForKeys:resourceKeys
                                                                   options:NSDirectoryEnumerationSkipsHiddenFiles
@@ -140,20 +142,24 @@
     NSUInteger currentCacheSize = 0;
     
     // Enumerate all of the files in the cache directory.  This loop has two purposes:
-    //
     //  1. Removing files that are older than the expiration date.
     //  2. Storing file attributes for the size-based cleanup pass.
+    // 列举缓存目录中的所有文件。此循环有两个用途：
+    //  1. 正在删除早于过期日期的文件。
+    //  2. 存储基于大小的清理过程的文件属性。
     NSMutableArray<NSURL *> *urlsToDelete = [[NSMutableArray alloc] init];
     for (NSURL *fileURL in fileEnumerator) {
         NSError *error;
         NSDictionary<NSString *, id> *resourceValues = [fileURL resourceValuesForKeys:resourceKeys error:&error];
         
         // Skip directories and errors.
+        // 跳过文件夹和错误。
         if (error || !resourceValues || [resourceValues[NSURLIsDirectoryKey] boolValue]) {
             continue;
         }
         
         // Remove files that are older than the expiration date;
+        // 删除超过过期日期的文件
         NSDate *modifiedDate = resourceValues[cacheContentDateKey];
         if (expirationDate && [[modifiedDate laterDate:expirationDate] isEqualToDate:expirationDate]) {
             [urlsToDelete addObject:fileURL];
@@ -161,6 +167,7 @@
         }
         
         // Store a reference to this file and account for its total size.
+        // 存储对该文件的引用并计算其总大小。
         NSNumber *totalAllocatedSize = resourceValues[NSURLTotalFileAllocatedSizeKey];
         currentCacheSize += totalAllocatedSize.unsignedIntegerValue;
         cacheFiles[fileURL] = resourceValues;
@@ -172,18 +179,23 @@
     
     // If our remaining disk cache exceeds a configured maximum size, perform a second
     // size-based cleanup pass.  We delete the oldest files first.
+    // 如果剩余的磁盘缓存超过配置的最大 size，请执行第二步
+    // 基于大小的清理过程。我们先删除最旧的文件。
     NSUInteger maxDiskSize = self.config.maxDiskSize;
     if (maxDiskSize > 0 && currentCacheSize > maxDiskSize) {
         // Target half of our maximum cache size for this cleanup pass.
+        // 将清除最大缓存 size 的一半作为目标。
         const NSUInteger desiredCacheSize = maxDiskSize / 2;
         
         // Sort the remaining cache files by their last modification time or last access time (oldest first).
+        // 按剩余的缓存文件的上次修改时间或上次访问时间（最早的）进行排序。
         NSArray<NSURL *> *sortedFiles = [cacheFiles keysSortedByValueWithOptions:NSSortConcurrent
                                                                  usingComparator:^NSComparisonResult(id obj1, id obj2) {
                                                                      return [obj1[cacheContentDateKey] compare:obj2[cacheContentDateKey]];
                                                                  }];
         
         // Delete files until we fall below our desired cache size.
+        // 删除文件，直到我们低于所需的缓存 size。
         for (NSURL *fileURL in sortedFiles) {
             if ([self.fileManager removeItemAtURL:fileURL error:nil]) {
                 NSDictionary<NSString *, id> *resourceValues = cacheFiles[fileURL];
@@ -232,6 +244,7 @@
     NSParameterAssert(srcPath);
     NSParameterAssert(dstPath);
     // Check if old path is equal to new path
+    // 检查新旧路径是否相同
     if ([srcPath isEqualToString:dstPath]) {
         return;
     }

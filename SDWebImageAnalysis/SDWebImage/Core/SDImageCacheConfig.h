@@ -14,10 +14,10 @@
 typedef NS_ENUM(NSUInteger, SDImageCacheConfigExpireType) {
     
     // When the image is accessed it will update this value
-    // 访问图像时，它将更新此 value
+    // 图像最近访问的时间
     SDImageCacheConfigExpireTypeAccessDate,
     // The image was obtained from the disk cache (Default)
-    // 图像是从磁盘缓存中获取的（默认）
+    // 图像最近修改的时间（默认）
     SDImageCacheConfigExpireTypeModificationDate
 };
 

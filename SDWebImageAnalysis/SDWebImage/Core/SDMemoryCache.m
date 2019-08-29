@@ -62,6 +62,7 @@ static void * SDMemoryCacheContext = &SDMemoryCacheContext;
     self.weakCache = [[NSMapTable alloc] initWithKeyOptions:NSPointerFunctionsStrongMemory valueOptions:NSPointerFunctionsWeakMemory capacity:0];
     self.weakCacheLock = dispatch_semaphore_create(1);
     
+    // 接收内存警告通知
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didReceiveMemoryWarning:)
                                                  name:UIApplicationDidReceiveMemoryWarningNotification
@@ -73,6 +74,7 @@ static void * SDMemoryCacheContext = &SDMemoryCacheContext;
 #if SD_UIKIT
 - (void)didReceiveMemoryWarning:(NSNotification *)notification {
     // Only remove cache, but keep weak cache
+    // 只删除缓存，但保留 weak 缓存
     [super removeAllObjects];
 }
 

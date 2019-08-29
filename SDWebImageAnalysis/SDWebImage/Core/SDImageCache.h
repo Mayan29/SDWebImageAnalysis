@@ -67,16 +67,18 @@ typedef NS_OPTIONS(NSUInteger, SDImageCacheOptions) {
 // By default we use `SDMemoryCache` class, you can also use this to call your own implementation class method.
 // @note To customize this class, check `SDImageCacheConfig.memoryCacheClass` property.
 // 用于当前图像缓存的内存缓存实现对象。
-// 通常我们使用 `SDMemoryCache` 类，你也可以使用它调用自己的实现类方法。
+// 默认情况下，我们使用 `SDMemoryCache` 类，您也可以使用它调用自己的实现类方法。
 // 注意：若要自定义此类，请选择 `SDImageCacheConfig.memoryCacheClass` 属性。
 @property (nonatomic, strong, readonly, nonnull) id<SDMemoryCache> memoryCache;
 
-/**
- * The disk cache implementation object used for current image cache.
- * By default we use `SDMemoryCache` class, you can also use this to call your own implementation class method.
- * @note To customize this class, check `SDImageCacheConfig.diskCacheClass` property.
- * @warning When calling method about read/write in disk cache, be sure to either make your disk cache implementation IO-safe or using the same access queue to avoid issues.
- */
+// The disk cache implementation object used for current image cache.
+// By default we use `SDMemoryCache` class, you can also use this to call your own implementation class method.
+// @note To customize this class, check `SDImageCacheConfig.diskCacheClass` property.
+// @warning When calling method about read/write in disk cache, be sure to either make your disk cache implementation IO-safe or using the same access queue to avoid issues.
+// 用于当前图像缓存的磁盘缓存实现对象。
+// 默认情况下，我们使用 `SDMemoryCache` 类，您也可以使用它调用自己的实现类方法。
+// 注意：若要自定义此类，请选择 `SDImageCacheConfig.diskCacheClass` 属性。
+// 警告：调用磁盘缓存中的 read/write 方法时，请确保磁盘缓存实现 IO-safe，或使用相同的访问队列以避免出现问题。
 @property (nonatomic, strong, readonly, nonnull) id<SDDiskCache> diskCache;
 
 /**

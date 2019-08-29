@@ -69,10 +69,12 @@
         _config = [config copy];
         
         // Init the memory cache
+        // 初始化内存缓存
         NSAssert([config.memoryCacheClass conformsToProtocol:@protocol(SDMemoryCache)], @"Custom memory cache class must conform to `SDMemoryCache` protocol");
         _memoryCache = [[config.memoryCacheClass alloc] initWithConfig:_config];
         
         // Init the disk cache
+        // 初始化磁盘缓存
         if (directory != nil) {
             _diskCachePath = [directory stringByAppendingPathComponent:ns];
         } else {
@@ -84,15 +86,18 @@
         _diskCache = [[config.diskCacheClass alloc] initWithCachePath:_diskCachePath config:_config];
         
         // Check and migrate disk cache directory if need
+        // 检查并迁移磁盘缓存目录
         [self migrateDiskCacheDirectory];
 
 #if SD_UIKIT
         // Subscribe to app events
+        // 订阅 app 事件
+        // app 在前台，双击 Home 键，终止应用前调用
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(applicationWillTerminate:)
                                                      name:UIApplicationWillTerminateNotification
                                                    object:nil];
-
+        // app 进入后台的时候调用
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(applicationDidEnterBackground:)
                                                      name:UIApplicationDidEnterBackgroundNotification
@@ -576,13 +581,14 @@
     }
     UIApplication *application = [UIApplication performSelector:@selector(sharedApplication)];
     __block UIBackgroundTaskIdentifier bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
-        // Clean up any unfinished task business by marking where you
-        // stopped or ending the task outright.
+        // Clean up any unfinished task business by marking where you stopped or ending the task outright.
+        // 当你停止或者直接结束任务，通过标记清除任何未完成的任务。
         [application endBackgroundTask:bgTask];
         bgTask = UIBackgroundTaskInvalid;
     }];
 
     // Start the long-running task and return immediately.
+    // 启动长时间运行的任务并立即返回。
     [self deleteOldFilesWithCompletionBlock:^{
         [application endBackgroundTask:bgTask];
         bgTask = UIBackgroundTaskInvalid;

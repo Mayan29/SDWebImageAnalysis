@@ -14,12 +14,8 @@
 @protocol SDMemoryCache <NSObject>
 
 @required
-/**
- Create a new memory cache instance with the specify cache config. You can check `maxMemoryCost` and `maxMemoryCount` used for memory cache.
-
- @param config The cache config to be used to create the cache.
- @return The new memory cache instance.
- */
+// Create a new memory cache instance with the specify cache config. You can check `maxMemoryCost` and `maxMemoryCount` used for memory cache.
+// 使用指定缓存配置创建新的内存缓存实例。您可以检查用于内存缓存的 `maxMemoryCost` 和 `maxMemoryCount`。
 - (nonnull instancetype)initWithConfig:(nonnull SDImageCacheConfig *)config;
 
 // Returns the value associated with a given key.
