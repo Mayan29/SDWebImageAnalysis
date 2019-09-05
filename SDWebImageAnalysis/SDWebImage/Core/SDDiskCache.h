@@ -24,73 +24,54 @@
 // cachePath: 缓存将写入数据的目录的全路径。初始化后你不应该读写此目录。
 - (nullable instancetype)initWithCachePath:(nonnull NSString *)cachePath config:(nonnull SDImageCacheConfig *)config;
 
-/**
- Returns a boolean value that indicates whether a given key is in cache.
- This method may blocks the calling thread until file read finished.
- 
- @param key A string identifying the data. If nil, just return NO.
- @return Whether the key is in cache.
- */
+// Returns a boolean value that indicates whether a given key is in cache.
+// This method may blocks the calling thread until file read finished.
+// 根据 key 判断 value 是否存在。
+// 此方法可能会阻止调用线程，直到文件读取完成。
 - (BOOL)containsDataForKey:(nonnull NSString *)key;
 
-/**
- Returns the data associated with a given key.
- This method may blocks the calling thread until file read finished.
- 
- @param key A string identifying the data. If nil, just return nil.
- @return The value associated with key, or nil if no value is associated with key.
- */
+// Returns the data associated with a given key.
+// This method may blocks the calling thread until file read finished.
+// 根据 key 获取 value。
+// 此方法可能会阻塞调用线程，直到文件读取完成。
 - (nullable NSData *)dataForKey:(nonnull NSString *)key;
 
-/**
- Sets the value of the specified key in the cache.
- This method may blocks the calling thread until file write finished.
- 
- @param data The data to be stored in the cache.
- @param key    The key with which to associate the value. If nil, this method has no effect.
- */
+// Sets the value of the specified key in the cache.
+// This method may blocks the calling thread until file write finished.
+// 根据 key 缓存 value。
+// 此方法可能会阻塞调用线程，直到文件写入完成。
 - (void)setData:(nullable NSData *)data forKey:(nonnull NSString *)key;
 
-/**
- Removes the value of the specified key in the cache.
- This method may blocks the calling thread until file delete finished.
- 
- @param key The key identifying the value to be removed. If nil, this method has no effect.
- */
+// Removes the value of the specified key in the cache.
+// This method may blocks the calling thread until file delete finished.
+// 根据 key 删除缓存中的 value。
+// 此方法可能会阻塞调用线程，直到文件删除完成。
 - (void)removeDataForKey:(nonnull NSString *)key;
 
-/**
- Empties the cache.
- This method may blocks the calling thread until file delete finished.
- */
+// Empties the cache.
+// This method may blocks the calling thread until file delete finished.
+// 清空缓存。
+// 此方法可能会阻塞调用线程，直到文件删除完成。
 - (void)removeAllData;
 
 // Removes the expired data from the cache. You can choose the data to remove base on `ageLimit`, `countLimit` and `sizeLimit` options.
 // 从缓存中删除过期数据。可以根据 `ageLimit`，`countLimit` 和 `sizeLimit` 选项选择要删除的数据。
 - (void)removeExpiredData;
 
-/**
- The cache path for key
-
- @param key A string identifying the value
- @return The cache path for key. Or nil if the key can not associate to a path
- */
+// The cache path for key
+// 根据 key 获取缓存路径
 - (nullable NSString *)cachePathForKey:(nonnull NSString *)key;
 
-/**
- Returns the number of data in this cache.
- This method may blocks the calling thread until file read finished.
- 
- @return The total data count.
- */
+// Returns the number of data in this cache.
+// This method may blocks the calling thread until file read finished.
+// 返回总数据计数。
+// 此方法可能会阻塞调用线程，直到文件读取完成。
 - (NSUInteger)totalCount;
 
-/**
- Returns the total size (in bytes) of data in this cache.
- This method may blocks the calling thread until file read finished.
- 
- @return The total data size in bytes.
- */
+// Returns the total size (in bytes) of data in this cache.
+// This method may blocks the calling thread until file read finished.
+// 返回总数据大小（字节）
+// 此方法可能会阻塞调用线程，直到文件读取完成。
 - (NSUInteger)totalSize;
 
 @end
@@ -98,9 +79,9 @@
 // The built-in disk cache.
 // 内置磁盘缓存
 @interface SDDiskCache : NSObject <SDDiskCache>
-/**
- Cache Config object - storing all kind of settings.
- */
+
+// Cache Config object - storing all kind of settings.
+// 缓存配置对象 - 存储所有类型的设置
 @property (nonatomic, strong, readonly, nonnull) SDImageCacheConfig *config;
 
 - (nonnull instancetype)init NS_UNAVAILABLE;

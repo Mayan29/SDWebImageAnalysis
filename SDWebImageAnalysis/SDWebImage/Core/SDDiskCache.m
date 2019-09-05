@@ -49,6 +49,8 @@
     
     // fallback because of https://github.com/rs/SDWebImage/pull/976 that added the extension to the disk file name
     // checking the key with and without the extension
+    // 由于 https://github.com/rs/SDWebImage/pull/976 添加了磁盘文件名的扩展名而导致回退
+    // 检查 key 是否使用了扩展名
     if (!exists) {
         exists = [self.fileManager fileExistsAtPath:filePath.stringByDeletingPathExtension];
     }
@@ -91,6 +93,8 @@
     // disable iCloud backup
     if (self.config.shouldDisableiCloud) {
         // ignore iCloud backup resource value error
+        // 忽略 iCloud 备份资源 value 错误
+        // 如果我们需要存放比较大的文件，同时又不希望被系统清理掉，那我们就需要把资源保存在 Documents 目录下，但是我们又不希望被 iCloud 备份，因此使用如下方法：
         [fileURL setResourceValue:@YES forKey:NSURLIsExcludedFromBackupKey error:nil];
     }
 }
@@ -287,11 +291,14 @@ static inline NSString * _Nonnull SDDiskCacheFileNameForKey(NSString * _Nullable
     if (str == NULL) {
         str = "";
     }
+    
+    // 创建字符串数组接受 MD5 值（ MD5 加密后是 128 bit，16 字节 * 8 位/字节 = 128 位）
     unsigned char r[CC_MD5_DIGEST_LENGTH];
     CC_MD5(str, (CC_LONG)strlen(str), r);
     NSURL *keyURL = [NSURL URLWithString:key];
     NSString *ext = keyURL ? keyURL.pathExtension : key.pathExtension;
     // File system has file name length limit, we need to check if ext is too long, we don't add it to the filename
+    // 文件系统有文件名长度限制，如果 ext 太长，不添加到文件名中
     if (ext.length > SD_MAX_FILE_EXTENSION_LENGTH) {
         ext = nil;
     }
