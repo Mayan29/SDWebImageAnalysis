@@ -145,7 +145,7 @@
     NSMutableDictionary<NSURL *, NSDictionary<NSString *, id> *> *cacheFiles = [NSMutableDictionary dictionary];
     NSUInteger currentCacheSize = 0;
     
-    // Enumerate all of the files in the cache directory.  This loop has two purposes:
+    // Enumerate all of the files in the cache directory. This loop has two purposes:
     //  1. Removing files that are older than the expiration date.
     //  2. Storing file attributes for the size-based cleanup pass.
     // 列举缓存目录中的所有文件。此循环有两个用途：

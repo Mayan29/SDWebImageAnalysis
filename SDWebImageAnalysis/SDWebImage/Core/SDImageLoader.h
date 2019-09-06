@@ -15,11 +15,12 @@ typedef void(^SDImageLoaderCompletedBlock)(UIImage * _Nullable image, NSData * _
 
 #pragma mark - Context Options
 
-/**
- A `UIImage` instance from `SDWebImageManager` when you specify `SDWebImageRefreshCached` and image cache hit.
- This can be a hint for image loader to load the image from network and refresh the image from remote location if needed. If the image from remote location does not change, you should call the completion with `SDWebImageErrorCacheNotModified` error. (UIImage)
- @note If you don't implement `SDWebImageRefreshCached` support, you do not need to care abot this context option.
- */
+// A `UIImage` instance from `SDWebImageManager` when you specify `SDWebImageRefreshCached` and image cache hit.
+// This can be a hint for image loader to load the image from network and refresh the image from remote location if needed. If the image from remote location does not change, you should call the completion with `SDWebImageErrorCacheNotModified` error. (UIImage)
+// @note If you don't implement `SDWebImageRefreshCached` support, you do not need to care abot this context option.
+// `SDWebImageManager` 中的 `UIImage` 实例，当您指定 `SDWebImageRefreshCached` 和图像缓存时。
+// 这是一个提示，image loader 从网络加载图像并在需要时从远程位置刷新图像。如果远程位置的图像没有更改，则应在完成中调用 `SDWebImageErrorCacheNotModified` 错误。（图像）
+// 注意：如果不实现 `SDWebImageRefreshCached` 支持，则不需要关心此上下文选项。
 FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextLoaderCachedImage;
 
 #pragma mark - Helper method
@@ -27,7 +28,7 @@ FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextLoader
 // This is the built-in decoding process for image download from network or local file.
 // @note If you want to implement your custom loader with `requestImageWithURL:options:context:progress:completed:` API, but also want to keep compatible with SDWebImage's behavior, you'd better use this to produce image.
 // 这是用于从网络或本地文件下载图像的内置解码过程。
-// @注意：如果要使用 `requestImageWithURL:options:context:progress:completed:` API 实现自定义加载器，但还希望兼容 SDWebImage，则最好使用此方法生成图像。
+// 注意：如果要使用 `requestImageWithURL:options:context:progress:completed:` API 实现自定义加载器，但还希望兼容 SDWebImage，则最好使用此方法生成图像。
 FOUNDATION_EXPORT UIImage * _Nullable SDImageLoaderDecodeImageData(NSData * _Nonnull imageData, NSURL * _Nonnull imageURL, SDWebImageOptions options, SDWebImageContext * _Nullable context);
 
 // This is the built-in decoding process for image progressive download from network. It's used when `SDWebImageProgressiveLoad` option is set. (It's not required when your loader does not support progressive image loading)
@@ -50,26 +51,24 @@ FOUNDATION_EXPORT UIImage * _Nullable SDImageLoaderDecodeProgressiveImageData(NS
 // 注意：你有责任将图像加载到所需的全局队列中（以避免阻塞主队列）。我们只从调用队列，而不是全局队列中调用这些方法（对于 `SDWebImageManager`，它通常从主队列调用）。
 @protocol SDImageLoader <NSObject>
 
-/**
- Whether current image loader supports to load the provide image URL.
- This will be checked everytime a new image request come for loader. If this return NO, we will mark this image load as failed. If return YES, we will start to call `requestImageWithURL:options:context:progress:completed:`.
-
- @param url The image URL to be loaded.
- @return YES to continue download, NO to stop download.
- */
+// Whether current image loader supports to load the provide image URL.
+// This will be checked everytime a new image request come for loader. If this return NO, we will mark this image load as failed. If return YES, we will start to call `requestImageWithURL:options:context:progress:completed:`.
+// return YES to continue download, NO to stop download.
+// 当前 image loader 是否支持加载提供的图像 URL。
+// loader 每次有新的图像请求时都会检查这个。如果返回 NO，则将此图像加载标记为失败。如果返回 YES，我们将开始调用 `requestImageWithURL:options:context:progress:completed:`
+// 返回 YES 继续下载，返回 NO 停止下载。
 - (BOOL)canRequestImageForURL:(nullable NSURL *)url;
 
-/**
- Load the image and image data with the given URL and return the image data. You're responsible for producing the image instance.
-
- @param url The URL represent the image. Note this may not be a HTTP URL
- @param options A mask to specify options to use for this request
- @param context A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
- @param progressBlock A block called while image is downloading
- *                    @note the progress block is executed on a background queue
- @param completedBlock A block called when operation has been completed.
- @return An operation which allow the user to cancel the current request.
- */
+// Load the image and image data with the given URL and return the image data. You're responsible for producing the image instance.
+// url: The URL represent the image. Note this may not be a HTTP URL
+// context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
+// progressBlock: A block called while image is downloading. Note the progress block is executed on a background queue
+// return An operation which allow the user to cancel the current request.
+// 使用给定的 URL 加载图像和图像数据，并返回图像数据。你负责生成 image 实例。
+// url: 图像 URL。注意这可能不是 HTTP URL
+// context: 上下文包含不同的选项来执行指定的更改或进程，请参见 `SDWebImageContextOption`。这将保存 `options` 枚举无法保存的额外对象。
+// progressblock: 下载图像时调用的 block。注意进度 block 是在后台队列上执行
+// 返回一个允许用户取消当前请求的操作。
 - (nullable id<SDWebImageOperation>)requestImageWithURL:(nullable NSURL *)url
                                                 options:(SDWebImageOptions)options
                                                 context:(nullable SDWebImageContext *)context
@@ -77,14 +76,14 @@ FOUNDATION_EXPORT UIImage * _Nullable SDImageLoaderDecodeProgressiveImageData(NS
                                               completed:(nullable SDImageLoaderCompletedBlock)completedBlock;
 
 
-/**
- Whether the error from image loader should be marked indded un-recoverable or not.
- If this return YES, failed URL which does not using `SDWebImageRetryFailed` will be blocked into black list. Else not.
-
- @param url The URL represent the image. Note this may not be a HTTP URL
- @param error The URL's loading error, from previous `requestImageWithURL:options:context:progress:completed:` completedBlock's error.
- @return Whether to block this url or not. Return YES to mark this URL as failed.
- */
+// Whether the error from image loader should be marked indded un-recoverable or not.
+// If this return YES, failed URL which does not using `SDWebImageRetryFailed` will be blocked into black list. Else not.
+// url: The URL represent the image. Note this may not be a HTTP URL
+// return: Whether to block this url or not. Return YES to mark this URL as failed.
+// 将 image loader 中的错误标记为可恢复或不可恢复。
+// 如果返回 YES，则不使用 `SDWebImageRetryFailed` 的失败 URL 将被阻止进入黑名单。否则不是。
+// url: 图像 URL。注意这可能不是 HTTP URL
+// 返回是否阻止此 URL。返回 YES 将此 URL 标记为失败。
 - (BOOL)shouldBlockFailedURLWithURL:(nonnull NSURL *)url
                               error:(nonnull NSError *)error;
 
