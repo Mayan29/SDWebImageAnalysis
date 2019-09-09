@@ -45,6 +45,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
 @property (strong, nonatomic, nonnull) dispatch_semaphore_t operationsLock; // A lock to keep the access to `URLOperations` thread-safe
 
 // The session in which data tasks will run
+// 将运行数据任务的会话
 @property (strong, nonatomic) NSURLSession *session;
 
 @end
@@ -197,6 +198,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
                                                   progress:(nullable SDWebImageDownloaderProgressBlock)progressBlock
                                                  completed:(nullable SDWebImageDownloaderCompletedBlock)completedBlock {
     // The URL will be used as the key to the callbacks dictionary so it cannot be nil. If it is nil immediately call the completed block with no image or data.
+    // URL 将作为回调字典的 key，因此不能为 nil。如果为 nil，则立即调用没有图像或数据的完成 block。
     if (url == nil) {
         if (completedBlock) {
             NSError *error = [NSError errorWithDomain:SDWebImageErrorDomain code:SDWebImageErrorInvalidURL userInfo:@{NSLocalizedDescriptionKey : @"Image url is nil"}];
@@ -209,6 +211,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     id downloadOperationCancelToken;
     NSOperation<SDWebImageDownloaderOperation> *operation = [self.URLOperations objectForKey:url];
     // There is a case that the operation may be marked as finished or cancelled, but not been removed from `self.URLOperations`.
+    // 有一种情况是，该操作可能被标记为已完成或已取消，但它尚未从 `self.URLOperations` 中删除。
     if (!operation || operation.isFinished || operation.isCancelled) {
         operation = [self createDownloaderOperationWithUrl:url options:options context:context];
         if (!operation) {
@@ -261,6 +264,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     return token;
 }
 
+// 私有方法，仅一处调用
 - (nullable NSOperation<SDWebImageDownloaderOperation> *)createDownloaderOperationWithUrl:(nonnull NSURL *)url
                                                                                   options:(SDWebImageDownloaderOptions)options
                                                                                   context:(nullable SDWebImageContext *)context {
@@ -270,6 +274,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     }
     
     // In order to prevent from potential duplicate caching (NSURLCache + SDImageCache) we disable the cache for image requests if told otherwise
+    // 为了防止潜在的重复缓存 (NSURLCache + SDImageCache)，如果另有说明，我们会禁用图像请求的缓存
     NSURLRequestCachePolicy cachePolicy = options & SDWebImageDownloaderUseNSURLCache ? NSURLRequestUseProtocolCachePolicy : NSURLRequestReloadIgnoringLocalCacheData;
     NSMutableURLRequest *mutableRequest = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:cachePolicy timeoutInterval:timeoutInterval];
     mutableRequest.HTTPShouldHandleCookies = (options & SDWebImageDownloaderHandleCookies);
@@ -288,6 +293,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     if (requestModifier) {
         NSURLRequest *modifiedRequest = [requestModifier modifiedRequestWithRequest:[mutableRequest copy]];
         // If modified request is nil, early return
+        // 如果修改后的请求为 nil，则提前返回
         if (!modifiedRequest) {
             return nil;
         } else {
@@ -299,6 +305,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     Class operationClass = self.config.operationClass;
     if (operationClass && [operationClass isSubclassOfClass:[NSOperation class]] && [operationClass conformsToProtocol:@protocol(SDWebImageDownloaderOperation)]) {
         // Custom operation class
+        // 自定义操作类
     } else {
         operationClass = [SDWebImageDownloaderOperation class];
     }
@@ -404,6 +411,7 @@ didReceiveResponse:(NSURLResponse *)response
  completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler {
 
     // Identify the operation that runs this task and pass it the delegate method
+    // 确定运行此任务的操作并将 delegate 方法传递给它
     NSOperation<SDWebImageDownloaderOperation> *dataOperation = [self operationWithTask:dataTask];
     if ([dataOperation respondsToSelector:@selector(URLSession:dataTask:didReceiveResponse:completionHandler:)]) {
         [dataOperation URLSession:session dataTask:dataTask didReceiveResponse:response completionHandler:completionHandler];

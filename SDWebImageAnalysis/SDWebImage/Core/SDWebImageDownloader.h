@@ -173,88 +173,47 @@ typedef SDImageLoaderCompletedBlock SDWebImageDownloaderCompletedBlock;
 // 返回与头字段相关联的 value，如果没有对应的头字段，则返回 nil。
 - (nullable NSString *)valueForHTTPHeaderField:(nullable NSString *)field;
 
-/**
- * Creates a SDWebImageDownloader async downloader instance with a given URL
- *
- * The delegate will be informed when the image is finish downloaded or an error has happen.
- *
- * @see SDWebImageDownloaderDelegate
- *
- * @param url            The URL to the image to download
- * @param completedBlock A block called once the download is completed.
- *                       If the download succeeded, the image parameter is set, in case of error,
- *                       error parameter is set with the error. The last parameter is always YES
- *                       if SDWebImageDownloaderProgressiveDownload isn't use. With the
- *                       SDWebImageDownloaderProgressiveDownload option, this block is called
- *                       repeatedly with the partial image object and the finished argument set to NO
- *                       before to be called a last time with the full image and finished argument
- *                       set to YES. In case of error, the finished argument is always YES.
- *
- * @return A token (SDWebImageDownloadToken) that can be used to cancel this operation
- */
+// Creates a SDWebImageDownloader async downloader instance with a given URL
+// The delegate will be informed when the image is finish downloaded or an error has happen.
+// @see SDWebImageDownloaderDelegate
+// completedBlock: A block called once the download is completed. If the download succeeded, the image parameter is set, in case of error, error parameter is set with the error. The last parameter is always YES if SDWebImageDownloaderProgressiveDownload isn't use. With the SDWebImageDownloaderProgressiveDownload option, this block is called repeatedly with the partial image object and the finished argument set to NO before to be called a last time with the full image and finished argument set to YES. In case of error, the finished argument is always YES.
+// return A token (SDWebImageDownloadToken) that can be used to cancel this operation
+// 使用给定的 URL 创建 SDWebImageDownloader 异步 downloader 实例
+// 图像下载完成或发生错误时，将通知 delegate
+// 请参阅 SDWebImageDownloaderDelegate
+// completed: 下载完成调用的 block。如果下载成功，则设置图像参数，如果出现错误，则设置错误参数。如果不使用 SDWebImageDownloaderProgressiveDownload，则最后一个参数始终为 YES。使用 SDWebImageDownloaderProgressiveDownload 选项，在将完整图像和 finished 参数设置为 YES 被 block 调用之前，使用部分图像对象和 finished 参数设置为 NO 之前这个 block 被重复调用。如果出错，则完成的参数始终为 YES。
+// 返回可用于取消此操作的 token（SDWebImageDownloadToken）
 - (nullable SDWebImageDownloadToken *)downloadImageWithURL:(nullable NSURL *)url
                                                  completed:(nullable SDWebImageDownloaderCompletedBlock)completedBlock;
 
-/**
- * Creates a SDWebImageDownloader async downloader instance with a given URL
- *
- * The delegate will be informed when the image is finish downloaded or an error has happen.
- *
- * @see SDWebImageDownloaderDelegate
- *
- * @param url            The URL to the image to download
- * @param options        The options to be used for this download
- * @param progressBlock  A block called repeatedly while the image is downloading
- *                       @note the progress block is executed on a background queue
- * @param completedBlock A block called once the download is completed.
- *                       If the download succeeded, the image parameter is set, in case of error,
- *                       error parameter is set with the error. The last parameter is always YES
- *                       if SDWebImageDownloaderProgressiveLoad isn't use. With the
- *                       SDWebImageDownloaderProgressiveLoad option, this block is called
- *                       repeatedly with the partial image object and the finished argument set to NO
- *                       before to be called a last time with the full image and finished argument
- *                       set to YES. In case of error, the finished argument is always YES.
- *
- * @return A token (SDWebImageDownloadToken) that can be used to cancel this operation
- */
+// progressBlock: A block called repeatedly while the image is downloading
+// @note the progress block is executed on a background queue
+// progressBlock：下载图像时重复调用的 block
+// 注意：在后台队列上执行进度 block
 - (nullable SDWebImageDownloadToken *)downloadImageWithURL:(nullable NSURL *)url
                                                    options:(SDWebImageDownloaderOptions)options
                                                   progress:(nullable SDWebImageDownloaderProgressBlock)progressBlock
                                                  completed:(nullable SDWebImageDownloaderCompletedBlock)completedBlock;
 
-/**
- * Creates a SDWebImageDownloader async downloader instance with a given URL
- *
- * The delegate will be informed when the image is finish downloaded or an error has happen.
- *
- * @see SDWebImageDownloaderDelegate
- *
- * @param url            The URL to the image to download
- * @param options        The options to be used for this download
- * @param context        A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
- * @param progressBlock  A block called repeatedly while the image is downloading
- *                       @note the progress block is executed on a background queue
- * @param completedBlock A block called once the download is completed.
- *
- * @return A token (SDWebImageDownloadToken) that can be used to cancel this operation
- */
+// context: A context contains different options to perform specify changes or processes, see `SDWebImageContextOption`. This hold the extra objects which `options` enum can not hold.
+// context: 上下文包含执行指定更改或进程的不同选项，请参阅 `SDWebImageContextOption`。这样可以保存 `options` 枚举不能容纳的额外对象。
 - (nullable SDWebImageDownloadToken *)downloadImageWithURL:(nullable NSURL *)url
                                                    options:(SDWebImageDownloaderOptions)options
                                                    context:(nullable SDWebImageContext *)context
                                                   progress:(nullable SDWebImageDownloaderProgressBlock)progressBlock
                                                  completed:(nullable SDWebImageDownloaderCompletedBlock)completedBlock;
 
-/**
- * Cancels all download operations in the queue
- */
+// Cancels all download operations in the queue
 - (void)cancelAllDownloads;
 
-/**
- * Invalidates the managed session, optionally canceling pending operations.
- * @note If you use custom downloader instead of the shared downloader, you need call this method when you do not use it to avoid memory leak
- * @param cancelPendingOperations Whether or not to cancel pending operations.
- * @note Calling this method on the shared downloader has no effect.
- */
+// Invalidates the managed session, optionally canceling pending operations.
+// @note If you use custom downloader instead of the shared downloader, you need call this method when you do not use it to avoid memory leak
+// cancelPendingOperations: Whether or not to cancel pending operations.
+// @note Calling this method on the shared downloader has no effect.
+// 使会话无效，可以选择取消挂起的操作。
+// 注意：如果使用自定义 downloader 而不是共享 downloader，则在不使用 downloader 时需要调用此方法以避免内存泄漏
+// cancelPendingOperations：是否取消挂起的操作。
+// 注意：在共享 downloader 上调用此方法无效。
 - (void)invalidateSessionAndCancel:(BOOL)cancelPendingOperations;
 
 @end

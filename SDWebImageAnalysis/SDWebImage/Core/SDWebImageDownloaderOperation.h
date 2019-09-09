@@ -10,11 +10,12 @@
 #import "SDWebImageDownloader.h"
 #import "SDWebImageOperation.h"
 
-/**
- Describes a downloader operation. If one wants to use a custom downloader op, it needs to inherit from `NSOperation` and conform to this protocol
- For the description about these methods, see `SDWebImageDownloaderOperation`
- @note If your custom operation class does not use `NSURLSession` at all, do not implement the optional methods and session delegate methods.
- */
+// Describes a downloader operation. If one wants to use a custom downloader op, it needs to inherit from `NSOperation` and conform to this protocol
+// For the description about these methods, see `SDWebImageDownloaderOperation`
+// @note If your custom operation class does not use `NSURLSession` at all, do not implement the optional methods and session delegate methods.
+// 描述 downloader 操作。如果想要使用自定义 downloader 操作，它需要从 `NSOperation` 继承并符合此协议
+// 有关这些方法的描述，请参阅 `SDWebImageDownloaderOperation`
+// 注意：如果您的自定义操作类根本不使用 `NSURLSession`，请不要实现可选方法和会话 delegate 方法。
 @protocol SDWebImageDownloaderOperation <NSURLSessionTaskDelegate, NSURLSessionDataDelegate>
 @required
 - (nonnull instancetype)initWithRequest:(nullable NSURLRequest *)request
@@ -42,31 +43,25 @@
 @end
 
 
-/**
- The download operation class for SDWebImageDownloader.
- */
+// The download operation class for SDWebImageDownloader.
+// SDWebImageDownloader 的下载操作类。
 @interface SDWebImageDownloaderOperation : NSOperation <SDWebImageDownloaderOperation>
 
-/**
- * The request used by the operation's task.
- */
+// The request used by the operation's task.
+// 操作任务使用的请求。
 @property (strong, nonatomic, readonly, nullable) NSURLRequest *request;
 
-/**
- * The response returned by the operation's task.
- */
+// The response returned by the operation's task.
+// 操作任务返回的响应。
 @property (strong, nonatomic, readonly, nullable) NSURLResponse *response;
 
-/**
- * The operation's task
- */
+// The operation's task
 @property (strong, nonatomic, readonly, nullable) NSURLSessionTask *dataTask;
 
-/**
- * The credential used for authentication challenges in `-URLSession:task:didReceiveChallenge:completionHandler:`.
- *
- * This will be overridden by any shared credentials that exist for the username or password of the request URL, if present.
- */
+// The credential used for authentication challenges in `-URLSession:task:didReceiveChallenge:completionHandler:`.
+// This will be overridden by any shared credentials that exist for the username or password of the request URL, if present.
+// 在 `-URLSession:task:didReceiveChallenge:completionHandler:` 中用于身份验证挑战的凭据。
+// 这将被请求 URL 的用户名或密码存在的任何共享凭据覆盖（如果存在）。
 @property (strong, nonatomic, nullable) NSURLCredential *credential;
 
 /**
