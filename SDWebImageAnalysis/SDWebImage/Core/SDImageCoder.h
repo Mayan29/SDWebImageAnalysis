@@ -15,44 +15,55 @@ typedef NSDictionary<SDImageCoderOption, id> SDImageCoderOptions;
 typedef NSMutableDictionary<SDImageCoderOption, id> SDImageCoderMutableOptions;
 
 #pragma mark - Coder Options
+
 // These options are for image decoding
-/**
- A Boolean value indicating whether to decode the first frame only for animated image during decoding. (NSNumber). If not provide, decode animated image if need.
- @note works for `SDImageCoder`.
- */
+// 这些选项用于图像解码
+
+// A Boolean value indicating whether to decode the first frame only for animated image during decoding. (NSNumber). If not provide, decode animated image if need.
+// @note works for `SDImageCoder`.
+// 一个布尔值，表示在解码期间是否仅对动画图像解码第一帧。如果不提供，请在需要时解码动画图像。
+// 注意：适用于 `SDImageCoder`。
 FOUNDATION_EXPORT SDImageCoderOption _Nonnull const SDImageCoderDecodeFirstFrameOnly;
-/**
- A CGFloat value which is greater than or equal to 1.0. This value specify the image scale factor for decoding. If not provide, use 1.0. (NSNumber)
- @note works for `SDImageCoder`, `SDProgressiveImageCoder`, `SDAnimatedImageCoder`.
- */
+
+// A CGFloat value which is greater than or equal to 1.0. This value specify the image scale factor for decoding. If not provide, use 1.0. (NSNumber)
+// @note works for `SDImageCoder`, `SDProgressiveImageCoder`, `SDAnimatedImageCoder`.
+// CGFloat 值大于或等于 1.0。该值指定用于解码的图像比例。如果不提供，默认使用 1.0。
+// 注意：适用于 `SDImageCoder`、`SDProgressiveImageCoder`、`SDAnimatedImageCoder`。
 FOUNDATION_EXPORT SDImageCoderOption _Nonnull const SDImageCoderDecodeScaleFactor;
 
 // These options are for image encoding
-/**
- A Boolean value indicating whether to encode the first frame only for animated image during encoding. (NSNumber). If not provide, encode animated image if need.
- @note works for `SDImageCoder`.
- */
+// 这些选项用于图像编码
+
+// A Boolean value indicating whether to encode the first frame only for animated image during encoding. (NSNumber). If not provide, encode animated image if need.
+// @note works for `SDImageCoder`.
+// 一个布尔值，表示在编码期间是否仅对动画图像编码第一帧。如果不提供，请在需要时编码动画图像。
+// 注意：适用于 `SDImageCoder`。
 FOUNDATION_EXPORT SDImageCoderOption _Nonnull const SDImageCoderEncodeFirstFrameOnly;
-/**
- A double value between 0.0-1.0 indicating the encode compression quality to produce the image data. 1.0 resulting in no compression and 0.0 resulting in the maximum compression possible. If not provide, use 1.0. (NSNumber)
- @note works for `SDImageCoder`
- */
+
+// A double value between 0.0-1.0 indicating the encode compression quality to produce the image data. 1.0 resulting in no compression and 0.0 resulting in the maximum compression possible. If not provide, use 1.0. (NSNumber)
+// @note works for `SDImageCoder`
+// 0.0-1.0 之间的双倍值，表示生成图像数据的编码压缩质量。1.0 为无压缩，0.0 为可能的最大压缩。如果不提供，默认使用 1.0。
+// 注意：适用于 `SDImageCoder`。
 FOUNDATION_EXPORT SDImageCoderOption _Nonnull const SDImageCoderEncodeCompressionQuality;
 
-/**
- A SDWebImageContext object which hold the original context options from top-level API. (SDWebImageContext)
- This option is ignored for all built-in coders and take no effect.
- But this may be useful for some custom coders, because some business logic may dependent on things other than image or image data inforamtion only.
- See `SDWebImageContext` for more detailed information.
- */
+// A SDWebImageContext object which hold the original context options from top-level API. (SDWebImageContext)
+// This option is ignored for all built-in coders and take no effect.
+// But this may be useful for some custom coders, because some business logic may dependent on things other than image or image data inforamtion only.
+// See `SDWebImageContext` for more detailed information.
+// SDWebImageContext 对象，用于保存来自 top-level API 的原始上下文选项。(SDWebImageContext)
+// 对于所有内置编码器，此选项都将被忽略，并且不起作用。
+// 但这可能对某些自定义编码器有用，因为某些业务逻辑可能仅依赖于图像或图像数据信息以外的内容。
+// 详细信息请参见 `SDWebImageContext`
 FOUNDATION_EXPORT SDImageCoderOption _Nonnull const SDImageCoderWebImageContext;
 
 #pragma mark - Coder
-/**
- This is the image coder protocol to provide custom image decoding/encoding.
- These methods are all required to implement.
- @note Pay attention that these methods are not called from main queue.
- */
+
+// This is the image coder protocol to provide custom image decoding/encoding.
+// These methods are all required to implement.
+// @note Pay attention that these methods are not called from main queue.
+// 这是提供自定义图像解码/编码的图像编码器协议。
+// 这些方法都需要实现。
+// 注意：不要从主队列调用这些方法。
 @protocol SDImageCoder <NSObject>
 
 @required
@@ -106,11 +117,13 @@ FOUNDATION_EXPORT SDImageCoderOption _Nonnull const SDImageCoderWebImageContext;
 @end
 
 #pragma mark - Progressive Coder
-/**
- This is the image coder protocol to provide custom progressive image decoding.
- These methods are all required to implement.
- @note Pay attention that these methods are not called from main queue.
- */
+
+// This is the image coder protocol to provide custom progressive image decoding.
+// These methods are all required to implement.
+// @note Pay attention that these methods are not called from main queue.
+// 这是提供自定义逐行图像解码的图像编码器协议。
+// 这些方法都需要实现。
+// 注意：不要从主队列调用这些方法。
 @protocol SDProgressiveImageCoder <SDImageCoder>
 
 @required
@@ -151,9 +164,9 @@ FOUNDATION_EXPORT SDImageCoderOption _Nonnull const SDImageCoderWebImageContext;
 @end
 
 #pragma mark - Animated Image Provider
-/**
- This is the animated image protocol to provide the basic function for animated image rendering. It's adopted by `SDAnimatedImage` and `SDAnimatedImageCoder`
- */
+
+// This is the animated image protocol to provide the basic function for animated image rendering. It's adopted by `SDAnimatedImage` and `SDAnimatedImageCoder`
+// 这是动画图像协议，为动画图像渲染提供基本功能。它被 `SDAnimatedImage` 和 `SDAnimatedImageCoder` 采用
 @protocol SDAnimatedImageProvider <NSObject>
 
 @required
@@ -198,9 +211,9 @@ FOUNDATION_EXPORT SDImageCoderOption _Nonnull const SDImageCoderWebImageContext;
 @end
 
 #pragma mark - Animated Coder
-/**
- This is the animated image coder protocol for custom animated image class like  `SDAnimatedImage`. Through it inherit from `SDImageCoder`. We currentlly only use the method `canDecodeFromData:` to detect the proper coder for specify animated image format.
- */
+
+// This is the animated image coder protocol for custom animated image class like  `SDAnimatedImage`. Through it inherit from `SDImageCoder`. We currentlly only use the method `canDecodeFromData:` to detect the proper coder for specify animated image format.
+// 这是自定义动画图像类的动画图像编码器协议，如 `SDAnimatedImage`。继承自 `SDImageCoder`。我们目前只使用 `canDecodeFromData:` 方法来检测指定动画图像格式的正确编码器。
 @protocol SDAnimatedImageCoder <SDImageCoder, SDAnimatedImageProvider>
 
 @required

@@ -10,9 +10,8 @@
 #import "SDWebImageCompat.h"
 #import "SDImageFrame.h"
 
-/**
- Provide some common helper methods for building the image decoder/encoder.
- */
+// Provide some common helper methods for building the image decoder/encoder.
+// 提供一些构建图像解码器/编码器的常用辅助方法。
 @interface SDImageCoderHelper : NSObject
 
 /**
