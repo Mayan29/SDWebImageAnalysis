@@ -9,9 +9,8 @@
 #import "SDWebImageCompat.h"
 #import "NSData+ImageContentType.h"
 
-/**
- UIImage category for image metadata, including animation, loop count, format, incremental, etc.
- */
+// UIImage category for image metadata, including animation, loop count, format, incremental, etc.
+// 图像元数据的 UIImage 类别，包括动画，循环计数，格式，渐进式等。
 @interface UIImage (Metadata)
 
 /**

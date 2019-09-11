@@ -10,10 +10,10 @@
 #import <Foundation/Foundation.h>
 #import "SDWebImageCompat.h"
 
-/**
- You can use switch case like normal enum. It's also recommended to add a default case. You should not assume anything about the raw value.
- For custom coder plugin, it can also extern the enum for supported format. See `SDImageCoder` for more detailed information.
- */
+// You can use switch case like normal enum. It's also recommended to add a default case. You should not assume anything about the raw value.
+// For custom coder plugin, it can also extern the enum for supported format. See `SDImageCoder` for more detailed information.
+// 你可以像枚举一样使用 switch case。建议添加默认 case。你不应该擅用任何原始 value。
+// 对于自定义 coder 插件，它还可以为枚举提供支持的格式。有关详细信息，请参见 `SDImageCoder`。
 typedef NSInteger SDImageFormat NS_TYPED_EXTENSIBLE_ENUM;
 static const SDImageFormat SDImageFormatUndefined = -1;
 static const SDImageFormat SDImageFormatJPEG      = 0;

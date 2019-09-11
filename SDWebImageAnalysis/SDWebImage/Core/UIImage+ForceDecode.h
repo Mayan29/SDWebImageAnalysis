@@ -8,9 +8,8 @@
 
 #import "SDWebImageCompat.h"
 
-/**
- UIImage category about force decode feature (avoid Image/IO's lazy decoding during rendering behavior).
- */
+// UIImage category about force decode feature (avoid Image/IO's lazy decoding during rendering behavior).
+// 关于强制解码功能的 UIImage 类别（避免在渲染期间 Image/IO 的延迟解码）。
 @interface UIImage (ForceDecode)
 
 /**

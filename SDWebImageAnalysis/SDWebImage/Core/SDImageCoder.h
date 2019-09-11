@@ -68,48 +68,32 @@ FOUNDATION_EXPORT SDImageCoderOption _Nonnull const SDImageCoderWebImageContext;
 
 @required
 #pragma mark - Decoding
-/**
- Returns YES if this coder can decode some data. Otherwise, the data should be passed to another coder.
- 
- @param data The image data so we can look at it
- @return YES if this coder can decode the data, NO otherwise
- */
+
+// Returns YES if this coder can decode some data. Otherwise, the data should be passed to another coder.
+// 如果这个 coder 可以解码 data，则返回 YES。否则，data 应传递给另一个 coder。
 - (BOOL)canDecodeFromData:(nullable NSData *)data;
 
-/**
- Decode the image data to image.
- @note This protocol may supports decode animated image frames. You can use `+[SDImageCoderHelper animatedImageWithFrames:]` to produce an animated image with frames.
-
- @param data The image data to be decoded
- @param options A dictionary containing any decoding options. Pass @{SDImageCoderDecodeScaleFactor: @(1.0)} to specify scale factor for image. Pass @{SDImageCoderDecodeFirstFrameOnly: @(YES)} to decode the first frame only.
- @return The decoded image from data
- */
+// Decode the image data to image.
+// @note This protocol may supports decode animated image frames. You can use `+[SDImageCoderHelper animatedImageWithFrames:]` to produce an animated image with frames.
+// 将图像 data 解码成图像。
+// 注意：该协议支持解码动画图像帧。您可以使用 `+[SDImageCoderHelper animatedImageWithFrames:]` 生成带帧的动画图像。
 - (nullable UIImage *)decodedImageWithData:(nullable NSData *)data
                                    options:(nullable SDImageCoderOptions *)options;
 
 #pragma mark - Encoding
 
-/**
- Returns YES if this coder can encode some image. Otherwise, it should be passed to another coder.
- For custom coder which introduce new image format, you'd better define a new `SDImageFormat` using like this. If you're creating public coder plugin for new image format, also update `https://github.com/rs/SDWebImage/wiki/Coder-Plugin-List` to avoid same value been defined twice.
- * @code
- static const SDImageFormat SDImageFormatHEIF = 10;
- * @endcode
- 
- @param format The image format
- @return YES if this coder can encode the image, NO otherwise
- */
+// Returns YES if this coder can encode some image. Otherwise, it should be passed to another coder.
+// For custom coder which introduce new image format, you'd better define a new `SDImageFormat` using like this. If you're creating public coder plugin for new image format, also update `https://github.com/rs/SDWebImage/wiki/Coder-Plugin-List` to avoid same value been defined twice.
+// 如果这个 coder 可以对某些图像进行编码，则返回 YES。否则，它应该传递给另一个 coder。
+// 对于引入新图像格式的自定义 coder，最好使用这样的方法定义一个新的 `SDImageFormat`。如果要为新图像格式创建公共 coder 插件，请同时更新 `https://github.com/rs/SDWebImage/wiki/Coder-Plugin-List`，以避免定义两次相同的值。
+
+// static const SDImageFormat SDImageFormatHEIF = 10;
 - (BOOL)canEncodeToFormat:(SDImageFormat)format NS_SWIFT_NAME(canEncode(to:));
 
-/**
- Encode the image to image data.
- @note This protocol may supports encode animated image frames. You can use `+[SDImageCoderHelper framesFromAnimatedImage:]` to assemble an animated image with frames.
-
- @param image The image to be encoded
- @param format The image format to encode, you should note `SDImageFormatUndefined` format is also  possible
- @param options A dictionary containing any encoding options. Pass @{SDImageCoderEncodeCompressionQuality: @(1)} to specify compression quality.
- @return The encoded image data
- */
+// Encode the image to image data.
+// @note This protocol may supports encode animated image frames. You can use `+[SDImageCoderHelper framesFromAnimatedImage:]` to assemble an animated image with frames.
+// 将图像编码为图像数据。
+// 注意：该协议支持编码动画图像帧。您可以使用 `+[SDImageCoderHelper framesFromAnimatedImage:]` 生成带帧的动画图像。
 - (nullable NSData *)encodedDataWithImage:(nullable UIImage *)image
                                    format:(SDImageFormat)format
                                   options:(nullable SDImageCoderOptions *)options;
@@ -121,18 +105,15 @@ FOUNDATION_EXPORT SDImageCoderOption _Nonnull const SDImageCoderWebImageContext;
 // This is the image coder protocol to provide custom progressive image decoding.
 // These methods are all required to implement.
 // @note Pay attention that these methods are not called from main queue.
-// 这是提供自定义逐行图像解码的图像编码器协议。
+// 这是图像 coder 协议，提供自定义渐进式图像解码。
 // 这些方法都需要实现。
 // 注意：不要从主队列调用这些方法。
 @protocol SDProgressiveImageCoder <SDImageCoder>
 
 @required
-/**
- Returns YES if this coder can incremental decode some data. Otherwise, it should be passed to another coder.
- 
- @param data The image data so we can look at it
- @return YES if this coder can decode the data, NO otherwise
- */
+
+// Returns YES if this coder can incremental decode some data. Otherwise, it should be passed to another coder.
+// 如果这个 coder 可以渐进式解码某些数据，则返回 YES。否则，它应该传递给另一个 coder。
 - (BOOL)canIncrementalDecodeFromData:(nullable NSData *)data;
 
 /**
@@ -170,42 +151,33 @@ FOUNDATION_EXPORT SDImageCoderOption _Nonnull const SDImageCoderWebImageContext;
 @protocol SDAnimatedImageProvider <NSObject>
 
 @required
-/**
- The original animated image data for current image. If current image is not an animated format, return nil.
- We may use this method to grab back the original image data if need, such as NSCoding or compare.
- 
- @return The animated image data
- */
+
+// The original animated image data for current image. If current image is not an animated format, return nil.
+// We may use this method to grab back the original image data if need, such as NSCoding or compare.
+// 当前图像的原始动画图像数据。如果当前图像不是动画格式，则返回 nil。
+// 如果需要，我们可以使用这种方法来获取原始图像数据，例如 NSCoding 或 compare。
 @property (nonatomic, copy, readonly, nullable) NSData *animatedImageData;
 
-/**
- Total animated frame count.
- If the frame count is less than 1, then the methods below will be ignored.
- 
- @return Total animated frame count.
- */
+// Total animated frame count.
+// If the frame count is less than 1, then the methods below will be ignored.
+// 动画帧数。
+// 如果帧数小于 1，则将忽略下面的方法。
 @property (nonatomic, assign, readonly) NSUInteger animatedImageFrameCount;
-/**
- Animation loop count, 0 means infinite looping.
- 
- @return Animation loop count
- */
+
+// Animation loop count, 0 means infinite looping.
+// 动画循环数，0 表示无限循环。
 @property (nonatomic, assign, readonly) NSUInteger animatedImageLoopCount;
-/**
- Returns the frame image from a specified index.
- @note The index maybe randomly if one image was set to different imageViews, keep it re-entrant. (It's not recommend to store the images into array because it's memory consuming)
- 
- @param index Frame index (zero based).
- @return Frame's image
- */
+
+// Returns the frame image from a specified index.
+// @note The index maybe randomly if one image was set to different imageViews, keep it re-entrant. (It's not recommend to store the images into array because it's memory consuming)
+// 返回指定索引中的帧图像。
+// 注意：索引可能是随机的，如果一个图像被设置为不同的 imageViews，请将其保存为可重入。（不建议将图像存储到数组中，因为它耗费内存）
 - (nullable UIImage *)animatedImageFrameAtIndex:(NSUInteger)index;
-/**
- Returns the frames's duration from a specified index.
- @note The index maybe randomly if one image was set to different imageViews, keep it re-entrant. (It's recommend to store the durations into array because it's not memory-consuming)
- 
- @param index Frame index (zero based).
- @return Frame's duration
- */
+
+// Returns the frames's duration from a specified index.
+// @note The index maybe randomly if one image was set to different imageViews, keep it re-entrant. (It's recommend to store the durations into array because it's not memory-consuming)
+// 从指定的索引返回帧的持续时间。
+// 注意：索引可能是随机的，如果一个图像被设置为不同的 imageViews，请将其保存为可重入。（建议将持续时间存储到数组中，因为它不占用内存）
 - (NSTimeInterval)animatedImageDurationAtIndex:(NSUInteger)index;
 
 @end
@@ -213,19 +185,19 @@ FOUNDATION_EXPORT SDImageCoderOption _Nonnull const SDImageCoderWebImageContext;
 #pragma mark - Animated Coder
 
 // This is the animated image coder protocol for custom animated image class like  `SDAnimatedImage`. Through it inherit from `SDImageCoder`. We currentlly only use the method `canDecodeFromData:` to detect the proper coder for specify animated image format.
-// 这是自定义动画图像类的动画图像编码器协议，如 `SDAnimatedImage`。继承自 `SDImageCoder`。我们目前只使用 `canDecodeFromData:` 方法来检测指定动画图像格式的正确编码器。
+// 这是自定义动画图像类的动画图像 coder 协议，如 `SDAnimatedImage`。继承自 `SDImageCoder`。我们目前只使用 `canDecodeFromData:` 方法来检测指定动画图像格式的正确编码器。
 @protocol SDAnimatedImageCoder <SDImageCoder, SDAnimatedImageProvider>
 
 @required
-/**
- Because animated image coder should keep the original data, we will alloc a new instance with the same class for the specify animated image data
- The init method should return nil if it can't decode the specify animated image data to produce any frame.
- After the instance created, we may call methods in `SDAnimatedImageProvider` to produce animated image frame.
 
- @param data The animated image data to be decode
- @param options A dictionary containing any animated decoding options (instance-level). Pass @{SDImageCoderDecodeScaleFactor: @(1.0)} to specify scale factor for animated image (each frames should use the same scale).
- @return A new instance to do animated decoding for specify image data
- */
+// Because animated image coder should keep the original data, we will alloc a new instance with the same class for the specify animated image data
+// The init method should return nil if it can't decode the specify animated image data to produce any frame.
+// After the instance created, we may call methods in `SDAnimatedImageProvider` to produce animated image frame.
+// return A new instance to do animated decoding for specify image data
+// 由于动画图像 coder 应该保留原始数据，因此我们将为指定的动画图像数据分配一个具有相同类的新实例
+// init 方法如果无法解码指定的动画图像数据以生成任何帧，则应返回 nil。
+// 创建实例后，可以调用 `SDAnimatedImageProvider` 中的方法生成动画图像帧。
+// 返回一个新实例，对指定的图像数据进行动画解码
 - (nullable instancetype)initWithAnimatedImageData:(nullable NSData *)data options:(nullable SDImageCoderOptions *)options;
 
 @end

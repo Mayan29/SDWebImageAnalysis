@@ -18,12 +18,14 @@
 static const size_t kBytesPerPixel = 4;
 static const size_t kBitsPerComponent = 8;
 
-/*
- * Defines the maximum size in MB of the decoded image when the flag `SDWebImageScaleDownLargeImages` is set
- * Suggested value for iPad1 and iPhone 3GS: 60.
- * Suggested value for iPad2 and iPhone 4: 120.
- * Suggested value for iPhone 3G and iPod 2 and earlier devices: 30.
- */
+// Defines the maximum size in MB of the decoded image when the flag `SDWebImageScaleDownLargeImages` is set
+// Suggested value for iPad1 and iPhone 3GS: 60.
+// Suggested value for iPad2 and iPhone 4: 120.
+// Suggested value for iPhone 3G and iPod 2 and earlier devices: 30.
+// 当设置标识 `SDWebImageScaleDownLargeImages` 时，定义解码图像的最大 size（以 MB 为单位）
+// iPad1 和 iPhone 3GS 的建议值：60。
+// iPad2 和 iPhone 4 的建议值：120。
+// iPhone 3G 和 iPod 2 及早期设备的建议值：30。
 static const CGFloat kDestImageSizeMB = 60.f;
 
 /*
@@ -82,6 +84,7 @@ static const CGFloat kDestSeemOverlap = 2.0f;   // the numbers of pixels to over
     NSMutableData *imageData = [NSMutableData data];
     CFStringRef imageUTType = [NSData sd_UTTypeFromImageFormat:SDImageFormatGIF];
     // Create an image destination. GIF does not support EXIF image orientation
+    // 创建图像目标。GIF 不支持 EXIF 图像方向
     CGImageDestinationRef imageDestination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)imageData, imageUTType, frameCount, NULL);
     if (!imageDestination) {
         // Handle failure.
@@ -98,6 +101,7 @@ static const CGFloat kDestSeemOverlap = 2.0f;   // the numbers of pixels to over
         }
     }
     // Finalize the destination.
+    // 结束目标
     if (CGImageDestinationFinalize(imageDestination) == NO) {
         // Handle failure.
         CFRelease(imageDestination);

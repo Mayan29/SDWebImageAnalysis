@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "SDWebImageCompat.h"
 
-/**
- This class is used for creating animated images via `animatedImageWithFrames` in `SDImageCoderHelper`.
- @note If you need to specify animated images loop count, use `sd_imageLoopCount` property in `UIImage+Metadata.h`.
- */
+// This class is used for creating animated images via `animatedImageWithFrames` in `SDImageCoderHelper`.
+// @note If you need to specify animated images loop count, use `sd_imageLoopCount` property in `UIImage+Metadata.h`.
+// 这个 class 用于通过 `SDImageCoderHelper` 中的 `animatedImageWithFrames` 创建动画图像。
+// 注意：如果需要指定动画图像循环计数，请在 `UIImage+Metadata.h` 中使用 `sd_imageLoopCount` 属性。
 @interface SDImageFrame : NSObject
 
 /**

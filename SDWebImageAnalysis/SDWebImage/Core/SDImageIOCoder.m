@@ -125,10 +125,8 @@
             if (val) CFNumberGetValue(val, kCFNumberNSIntegerType, &orientationValue);
             CFRelease(properties);
             
-            // When we draw to Core Graphics, we lose orientation information,
-            // which means the image below born of initWithCGIImage will be
-            // oriented incorrectly sometimes. (Unlike the image born of initWithData
-            // in didCompleteWithError.) So save it here and pass it on later.
+            // When we draw to Core Graphics, we lose orientation information, which means the image below born of initWithCGIImage will be oriented incorrectly sometimes. (Unlike the image born of initWithData in didCompleteWithError.) So save it here and pass it on later.
+            // 当我们绘制到核心图形时，我们会丢失方向信息，这意味着 initWithCGIImage 生成的下面的图像有时会方向错误。（与 didCompleteWithError 中的 initWithData 生成的图像不同）因此将其保存在此处并稍后传递。
             _orientation = (CGImagePropertyOrientation)orientationValue;
         }
     }

@@ -160,9 +160,9 @@
     }
     
     // Many annoying ads specify a 0 duration to make an image flash as quickly as possible.
-    // We follow Firefox's behavior and use a duration of 100 ms for any frames that specify
-    // a duration of <= 10 ms. See <rdar://problem/7689300> and <http://webkit.org/b/36082>
-    // for more information.
+    // We follow Firefox's behavior and use a duration of 100 ms for any frames that specify a duration of <= 10 ms. See <rdar://problem/7689300> and <http://webkit.org/b/36082> for more information.
+    // 许多骚扰广告都指定了 0 个持续时间，以使图像尽可能快地闪烁。
+    // 我们遵循 Firefox 的行为，对于任何指定持续时间 <=10 ms 的帧，使用 100 ms 的持续时间。有关详细信息，请参见 <rdar://problem/7689300> 和 <http://webkit.org/b/36082>。
     
     if (frameDuration < 0.011f) {
         frameDuration = 0.100f;

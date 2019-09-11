@@ -12,9 +12,8 @@
 
 #import "SDWebImageManager.h"
 
-/**
- * Integrates SDWebImage async downloading and caching of remote images with UIImageView for highlighted state.
- */
+// Integrates SDWebImage async downloading and caching of remote images with UIImageView for highlighted state.
+// 使用 UIImageView 集成 SDWebImage 异步下载和远程图像缓存，以突出显示状态。
 @interface UIImageView (HighlightedWebCache)
 
 /**

@@ -26,10 +26,10 @@ typedef NS_OPTIONS(NSUInteger, SDRectCorner) {
 };
 #endif
 
-/**
- Provide some commen method for `UIImage`.
- Image process is based on Core Graphics and vImage.
- */
+// Provide some commen method for `UIImage`.
+// Image process is based on Core Graphics and vImage.
+// 提供一些常用的 `UIImage` 方法。
+// 图像进程基于核心图形和 vImage。
 @interface UIImage (Transform)
 
 #pragma mark - Image Geometry
