@@ -1,6 +1,11 @@
-# SDWebImageAnalysis
+# SDWebImage 源码解析（更新至 5.1 版本）
 
-[SDWebImage](https://github.com/SDWebImage/SDWebImage) 源码解析（更新至 5.1 版本）
+[SDWebImaged](https://github.com/SDWebImage/SDWebImage) 主要包含三个功能模块：下载（SDWebImageDownloader）、编码/解码（SDImageCodersManager）、缓存策略（SDImageCache）
+
+> https://www.jianshu.com/p/03dc17e71f46
+> https://www.jianshu.com/p/9c8c24e7a2cf
+> https://www.cnblogs.com/polobymulberry/p/5131983.html
+> http://www.cocoachina.com/articles/11501
 
 问题 1：SDMemoryCache 中的 weakCache 作用？
 

@@ -45,7 +45,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
 @property (strong, nonatomic, nonnull) dispatch_semaphore_t operationsLock; // A lock to keep the access to `URLOperations` thread-safe
 
 // The session in which data tasks will run
-// 将运行数据任务的会话
+// 所有的任务 (tasks) 将在此会话 (session) 中进行
 @property (strong, nonatomic) NSURLSession *session;
 
 @end
@@ -273,11 +273,14 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
         timeoutInterval = 15.0;
     }
     
+    // NSURLRequestUseProtocolCachePolicy: 默认的缓存策略，如果没有本地缓存就进行网络请求，如果有本地缓存则根据响应头的 Cache-Control 缓存过期时间字段来决定是否进行新的请求。参考: https://www.jianshu.com/p/f5064c77c5e9
+    // NSURLRequestReloadIgnoringLocalCacheData: 忽略本地缓存数据，直接请求服务端。参考: https://www.cnblogs.com/wendingding/p/3950198.html
     // In order to prevent from potential duplicate caching (NSURLCache + SDImageCache) we disable the cache for image requests if told otherwise
     // 为了防止潜在的重复缓存 (NSURLCache + SDImageCache)，如果另有说明，我们会禁用图像请求的缓存
     NSURLRequestCachePolicy cachePolicy = options & SDWebImageDownloaderUseNSURLCache ? NSURLRequestUseProtocolCachePolicy : NSURLRequestReloadIgnoringLocalCacheData;
     NSMutableURLRequest *mutableRequest = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:cachePolicy timeoutInterval:timeoutInterval];
     mutableRequest.HTTPShouldHandleCookies = (options & SDWebImageDownloaderHandleCookies);
+    // 提高请求效率，通常默认情况下请求和响应是顺序的, 也就是说请求–>得到响应后,再请求. 如果将HTTPShouldUsePipelining设置为YES, 则允许不必等到response, 就可以再次请求.
     mutableRequest.HTTPShouldUsePipelining = YES;
     SD_LOCK(self.HTTPHeadersLock);
     mutableRequest.allHTTPHeaderFields = self.HTTPHeaders;
