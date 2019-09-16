@@ -422,9 +422,8 @@ didReceiveResponse:(NSURLResponse *)response
             NSData *imageData = [self.imageData copy];
             self.imageData = nil;
             if (imageData) {
-                /**  if you specified to only use cached data via `SDWebImageDownloaderIgnoreCachedResponse`,
-                 *  then we should check if the cached data is equal to image data
-                 */
+                // if you specified to only use cached data via `SDWebImageDownloaderIgnoreCachedResponse`, then we should check if the cached data is equal to image data
+                // 如果指定仅通过 `SDWebImageDownloaderIgnoreCachedResponse` 使用缓存数据，则应检查缓存数据是否等于图像数据
                 if (self.options & SDWebImageDownloaderIgnoreCachedResponse && [self.cachedData isEqualToData:imageData]) {
                     self.responseError = [NSError errorWithDomain:SDWebImageErrorDomain code:SDWebImageErrorCacheNotModified userInfo:nil];
                     // call completion block with not modified error
@@ -432,6 +431,7 @@ didReceiveResponse:(NSURLResponse *)response
                     [self done];
                 } else {
                     // decode the image in coder queue
+                    // 在 coder 队列中解码图像
                     dispatch_async(self.coderQueue, ^{
                         @autoreleasepool {
                             UIImage *image = SDImageLoaderDecodeImageData(imageData, self.request.URL, [[self class] imageOptionsFromDownloaderOptions:self.options], self.context);

@@ -280,7 +280,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     NSURLRequestCachePolicy cachePolicy = options & SDWebImageDownloaderUseNSURLCache ? NSURLRequestUseProtocolCachePolicy : NSURLRequestReloadIgnoringLocalCacheData;
     NSMutableURLRequest *mutableRequest = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:cachePolicy timeoutInterval:timeoutInterval];
     mutableRequest.HTTPShouldHandleCookies = (options & SDWebImageDownloaderHandleCookies);
-    // 提高请求效率，通常默认情况下请求和响应是顺序的, 也就是说请求–>得到响应后,再请求. 如果将HTTPShouldUsePipelining设置为YES, 则允许不必等到response, 就可以再次请求.
+    // 通常默认情况下请求和响应是顺序的，也就是说请求 -> 得到响应 -> 再请求。如果设置为 YES, 则把多个 HTTP 请求放到一个 TCP 连接中一一发送，而在发送过程中不需要等待服务器对前一个请求的响应，只不过，客户端还是要按照发送请求的顺序来接收响应。（自行百度 HTTP pipelining）
     mutableRequest.HTTPShouldUsePipelining = YES;
     SD_LOCK(self.HTTPHeadersLock);
     mutableRequest.allHTTPHeaderFields = self.HTTPHeaders;
@@ -334,6 +334,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     
     if (self.config.executionOrder == SDWebImageDownloaderLIFOExecutionOrder) {
         // Emulate LIFO execution order by systematically adding new operations as last operation's dependency
+        // 通过系统地添加新的 operations 作为最后一个操作的依赖项来模仿后进先出执行顺序
         [self.lastAddedOperation addDependency:operation];
         self.lastAddedOperation = operation;
     }

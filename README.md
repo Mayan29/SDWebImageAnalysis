@@ -2,12 +2,17 @@
 
 [SDWebImaged](https://github.com/SDWebImage/SDWebImage) 主要包含三个功能模块：下载（SDWebImageDownloader）、编码/解码（SDImageCodersManager）、缓存策略（SDImageCache）
 
-> https://www.jianshu.com/p/03dc17e71f46
-> https://www.jianshu.com/p/9c8c24e7a2cf
-> https://www.cnblogs.com/polobymulberry/p/5131983.html
-> http://www.cocoachina.com/articles/11501
+> https://www.cnblogs.com/LeeGof/p/6913672.html
+> https://www.cnblogs.com/LeeGof/p/6914267.html
+> https://www.cnblogs.com/machao/p/6265621.html
+> http://www.cocoachina.com/cms/wap.php?action=article&id=22843
+> https://my.oschina.net/starmier/blog/467251
 
-问题 1：SDMemoryCache 中的 weakCache 作用？
+### 知识点 1：FOUNDATION_EXPORT 和 #define
+
+FOUNDATION_EXPORT 与 #define 都是用来定义常量的，前者比较时是用的是指针，后者是比较每一个字符，在使用宏定义多的地方可以考虑使用 FOUNDATION_EXPORT 效率会变高。
+
+### 问题 1：SDMemoryCache 中的 weakCache 作用？
 
 weakCache 是一个 NSMapTable 对象，通过弱引用来持有 keys 和 values，所以当 key 或者 value 被释放的时候，所存储的实体也会被移除。
 
