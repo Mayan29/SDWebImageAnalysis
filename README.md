@@ -1,8 +1,7 @@
 # SDWebImage 源码解析（更新至 5.1 版本）
 
-[SDWebImaged](https://github.com/SDWebImage/SDWebImage) 主要包含三个功能模块：下载（SDWebImageDownloader）、编码/解码（SDImageCodersManager）、缓存策略（SDImageCache）
+[SDWebImage](https://github.com/SDWebImage/SDWebImage) 主要包含三个功能模块：下载（SDWebImageDownloader）、编码/解码（SDImageCodersManager）、缓存策略（SDImageCache）
 
-> https://www.cnblogs.com/LeeGof/p/6913672.html
 > https://www.cnblogs.com/LeeGof/p/6914267.html
 > https://www.cnblogs.com/machao/p/6265621.html
 > http://www.cocoachina.com/cms/wap.php?action=article&id=22843
@@ -11,6 +10,10 @@
 ### 知识点 1：FOUNDATION_EXPORT 和 #define
 
 FOUNDATION_EXPORT 与 #define 都是用来定义常量的，前者比较时是用的是指针，后者是比较每一个字符，在使用宏定义多的地方可以考虑使用 FOUNDATION_EXPORT 效率会变高。
+
+### 知识点 2：下载器
+
+SDWebImageDownloader 完成了对网络图片的异步下载工作，准确说这个类是一个文件下载的工具类，真正的网络请求是在继承于 NSOperation 的 SDWebImageDownloaderOperation 类实现的。SDWebImageDownloader 的主要任务是下载相关配置项的管理，包括下载队列的先后顺序、最大下载任务数量控制、下载队列中的任务创建、取消、暂停等任务管理，以及其他 HTTPS 和 HTTP Header 的设置。
 
 ### 问题 1：SDMemoryCache 中的 weakCache 作用？
 

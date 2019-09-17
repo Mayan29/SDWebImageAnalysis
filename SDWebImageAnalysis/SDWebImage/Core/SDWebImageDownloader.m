@@ -123,7 +123,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
             }
             headerDictionary[@"User-Agent"] = userAgent;
         }
-        headerDictionary[@"Accept"] = @"image/*,*/*;q=0.8";
+        headerDictionary[@"Accept"] = @"image/*,*/*;q=0.8";  // 优先接收 image/*，其次接收 */*
         _HTTPHeaders = headerDictionary;
         _HTTPHeadersLock = dispatch_semaphore_create(1);
         _operationsLock = dispatch_semaphore_create(1);
@@ -316,8 +316,10 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     
     if ([operation respondsToSelector:@selector(setCredential:)]) {
         if (self.config.urlCredential) {
+            // SSL 验证
             operation.credential = self.config.urlCredential;
         } else if (self.config.username && self.config.password) {
+            // Basic 验证
             operation.credential = [NSURLCredential credentialWithUser:self.config.username password:self.config.password persistence:NSURLCredentialPersistenceForSession];
         }
     }
@@ -334,7 +336,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     
     if (self.config.executionOrder == SDWebImageDownloaderLIFOExecutionOrder) {
         // Emulate LIFO execution order by systematically adding new operations as last operation's dependency
-        // 通过系统地添加新的 operations 作为最后一个操作的依赖项来模仿后进先出执行顺序
+        // 如果是 LIFO，则让前面的 operation 依赖于最新添加的 operation
         [self.lastAddedOperation addDependency:operation];
         self.lastAddedOperation = operation;
     }
